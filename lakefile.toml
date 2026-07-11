@@ -1,0 +1,10 @@
+name = "POSET"
+version = "0.1.0"
+defaultTargets = ["poset"]
+
+[[lean_lib]]
+name = "POSET"
+
+[[lean_exe]]
+name = "poset"
+root = "Main"
