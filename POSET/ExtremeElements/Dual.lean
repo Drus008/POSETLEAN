@@ -1,4 +1,4 @@
-import POSET.ExtremeElements.Basic
+import POSET.ExtremeElements.Defs
 import POSET.DualOrder
 
 variable (A : Type) (P : POSET A)
