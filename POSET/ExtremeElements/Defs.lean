@@ -11,3 +11,11 @@ def MinElement (m : A) : Prop := ∀ x : A, m ≤ x
 def MaximalElement (M : A) : Prop := ∀ x : A, M ≤ x → x=M
 
 def MinimalElement (m : A) : Prop := ∀ x : A, x ≤ m → x=m
+
+def UpperBound (U : A) (S : A → Prop) : Prop := ∀ x : A, (S x) → x ≤ U
+
+def LowerBound (L : A) (S : A → Prop) : Prop := ∀ x : A, (S x) → L ≤ x
+
+def Supremum (s : A) (S : A → Prop) : Prop := UpperBound A P s S ∧ ∀ U : A, UpperBound A P U S → s ≤ U
+
+def Infimum (i : A) (S : A → Prop) : Prop := LowerBound A P i S ∧ ∀ L : A, LowerBound A P L S → L ≤ i
