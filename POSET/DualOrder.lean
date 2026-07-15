@@ -1,6 +1,6 @@
 import POSET.Basic
 
-variable (A : Type) (P : POSET A)
+variable {A : Type} (P : POSET A)
 
 def DualPOSET : POSET A where
   rel := fun (x y : A) => P.rel y x
@@ -20,7 +20,7 @@ def DualPOSET : POSET A where
     have h3 := h h2 h1
     exact h3
 
-theorem Dual_Dual_Is_OG : DualPOSET A (DualPOSET A P) = P := by
+theorem Dual_Dual_Is_OG : DualPOSET (DualPOSET P) = P := by
   ext x y
   unfold DualPOSET
   dsimp

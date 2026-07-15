@@ -1,6 +1,6 @@
 import POSET.Basic
 
-variable (A : Type) (P : POSET A)
+variable {A : Type} (P : POSET A)
 
 local infix:50 " ≤ " => P.rel
 
@@ -16,6 +16,6 @@ def UpperBound (U : A) (S : A → Prop) : Prop := ∀ x : A, (S x) → x ≤ U
 
 def LowerBound (L : A) (S : A → Prop) : Prop := ∀ x : A, (S x) → L ≤ x
 
-def Supremum (s : A) (S : A → Prop) : Prop := UpperBound A P s S ∧ ∀ U : A, UpperBound A P U S → s ≤ U
+def Supremum (s : A) (S : A → Prop) : Prop := UpperBound P s S ∧ ∀ U : A, UpperBound P U S → s ≤ U
 
-def Infimum (i : A) (S : A → Prop) : Prop := LowerBound A P i S ∧ ∀ L : A, LowerBound A P L S → L ≤ i
+def Infimum (i : A) (S : A → Prop) : Prop := LowerBound P i S ∧ ∀ L : A, LowerBound P L S → L ≤ i
