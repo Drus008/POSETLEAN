@@ -1,7 +1,7 @@
-variable (A : Type)
+variable {A : Type}
 
 @[ext]
-structure POSET where
+structure POSET (A : Type) where
   rel : A → A → Prop
   refl : ∀ a : A, rel a a
   antisym : ∀ a b : A, rel a b → rel b a → a = b
