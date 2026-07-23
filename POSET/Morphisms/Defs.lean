@@ -1,7 +1,5 @@
 import POSET.Basic
 
--- CoeFun! Segur que ajuda.
-
 variable {A B : Type} (P1 : POSET A) (P2 : POSET B)
 
 local infix:50 " ≤1 " => P1.rel

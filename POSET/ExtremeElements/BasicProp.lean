@@ -17,6 +17,20 @@ theorem Min_unique {m1 m2 : A} (h1 : MinElement P m1) (h2 : MinElement P m2) : m
   have P2 := Min_Is_Dual_Max h2
   exact Max_unique P1 P2
 
+theorem Sup_Unique {s1 s2 : A} {S : A → Prop} (h1 : Supremum P s1 S) (h2 : Supremum P s2 S) : s1 = s2
+  := by
+  have h1' := h1.left
+  have h2' := h2.left
+  have h1'' := h1.right s2 h2'
+  have h2'' := h2.right s1 h1'
+  exact antisym P h1'' h2''
+
+theorem Inf_Unique {i1 i2 : A} {S : A → Prop} (h1 : Infimum P i1 S) (h2 : Infimum P i2 S) : i1 = i2
+  := by
+  have h1' := Infimum_Is_Dual_Supremum h1
+  have h2' := Infimum_Is_Dual_Supremum h2
+  exact Sup_Unique h1' h2'
+
 theorem Max_Is_Maximal {M : A} (h : MaxElement P M) : MaximalElement P M := by
   unfold MaximalElement
   unfold MaxElement at h

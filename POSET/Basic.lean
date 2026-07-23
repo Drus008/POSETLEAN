@@ -13,3 +13,6 @@ def SubPOSET (P : A → Prop) (base : POSET A) : POSET {x : A // P x} where
   refl := fun x => base.refl x.val
   antisym := fun x y h1 h2 => Subtype.ext (base.antisym x.val y.val h1 h2)
   trans := fun x y z h1 h2 => base.trans x.val y.val z.val h1 h2
+
+theorem antisym {a b : A} (P : POSET A) (h1 : P.rel a b) (h2 : P.rel b a) : a = b := by
+  exact P.antisym a b h1 h2
