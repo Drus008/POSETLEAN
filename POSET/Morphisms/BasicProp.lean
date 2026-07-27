@@ -18,7 +18,7 @@ theorem DualMonotone_Is_Decreasing (f : Monotone P (DualPOSET P)) : Decreasing P
     dsimp at h
     exact h
 
-def Decreasing_Is_DualMonotone (h : Decreasing P f) : Monotone P (DualPOSET P) where
+def Decreasing_Is_DualMonotone {f : A → A} (h : Decreasing P f) : Monotone P (DualPOSET P) where
     app := f
     mon := h
 

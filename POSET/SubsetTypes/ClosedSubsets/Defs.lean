@@ -16,5 +16,5 @@ def ElementDownwardClausure (a : A) (x : A) : Prop := x ≤ a
 def UpwardClausure (S : A → Prop) (x : A) : Prop :=
   ∃ a : A, (S a) ∧ (a ≤ x)
 
-def DownClausure (S : A → Prop) (x : A) : Prop :=
+def DownwardClausure (S : A → Prop) (x : A) : Prop :=
   ∃ a : A, (S a) ∧ (x ≤ a)
