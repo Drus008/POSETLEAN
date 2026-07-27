@@ -43,20 +43,6 @@ theorem Min_Is_Minimal {m : A} (h : MinElement P m) : MinimalElement P m := by
   have h := Max_Is_Maximal h
   exact Dual_Maximal_Is_Minimal h
 
-theorem Global_UpperBound_Is_Max {U : A} (h1 : UpperBound P U (fun _ => True)) : MaxElement P U
-  := by
-  unfold MaxElement
-  unfold UpperBound at h1
-  intro x
-  have h1 := h1 x True.intro
-  exact h1
-
-theorem Global_LowerBound_Is_Min {L : A} (h1 : LowerBound P L (fun _ => True)) : MinElement P L
-  := by
-  have h2 := LowerBound_Is_Dual_UpperBound h1
-  have h3 := Global_UpperBound_Is_Max h2
-  exact Dual_Max_Is_Min h3
-
 theorem Max_Is_UpperBound {M : A} (h : MaxElement P M) (S : A → Prop) : UpperBound P M S
   := by
   unfold UpperBound
