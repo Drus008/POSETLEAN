@@ -5,3 +5,5 @@ def emptySet (_ : A) : Prop := False
 def universeSet (_ : A) : Prop := True
 
 def unitarySet (a : A) (x : A) : Prop := x = a
+
+def subset (S1 S2 : A → Prop) : Prop := ∀ x : A, (S1 x) → (S2 x)
