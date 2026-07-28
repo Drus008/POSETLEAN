@@ -22,10 +22,12 @@ theorem UniversIsUpward : UpwardClosed P universeSet := by
   unfold UpwardClosed
   intro x a h
   rw [universeSet]
+  intro h
   trivial
 
 theorem UniversIsDownward : DownwardClosed P universeSet := by
   unfold DownwardClosed
   intro x a h
   rw [universeSet]
+  intro h
   trivial

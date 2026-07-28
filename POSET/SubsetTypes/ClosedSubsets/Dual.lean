@@ -32,8 +32,8 @@ theorem Dual_DownwardClosed_Is_UpwardClosed {D : A → Prop} (h : DownwardClosed
   rw [Dual_Dual_Is_OG] at h
   exact h
 
-theorem UpwardClausure_Is_Dual_DownwardClausure (S : A → Prop) :
-  (UpwardClausure P S) = (DownwardClausure (DualPOSET P) S) := by
+theorem UpwardClosure_Is_Dual_DownwardClosure (S : A → Prop) :
+  (UpwardClosure P S) = (DownwardClosure (DualPOSET P) S) := by
   funext x
   apply propext
   constructor
@@ -42,19 +42,19 @@ theorem UpwardClausure_Is_Dual_DownwardClausure (S : A → Prop) :
   · intro h
     exact h
 
-theorem DownwardClausure_Is_Dual_UpwardClausure (S : A → Prop) :
-  (DownwardClausure P S) = (UpwardClausure (DualPOSET P) S) := by
-  have h := UpwardClausure_Is_Dual_DownwardClausure (DualPOSET P) S
+theorem DownwardClosure_Is_Dual_UpwardClosure (S : A → Prop) :
+  (DownwardClosure P S) = (UpwardClosure (DualPOSET P) S) := by
+  have h := UpwardClosure_Is_Dual_DownwardClosure (DualPOSET P) S
   rw [Dual_Dual_Is_OG P] at h
   exact h
 
-theorem ElementUpwardClausure_Is_Dual_ElementDownwardClausure (a : A) :
-  (ElementUpwardClausure P a) = (ElementDownwardClausure (DualPOSET P) a) := by
-  unfold ElementUpwardClausure ElementDownwardClausure DualPOSET
+theorem ElementUpwardClosure_Is_Dual_ElementDownwardClosure (a : A) :
+  (ElementUpwardClosure P a) = (ElementDownwardClosure (DualPOSET P) a) := by
+  unfold ElementUpwardClosure ElementDownwardClosure DualPOSET
   simp
 
-theorem ElementDownwardClausure_Is_Dual_ElementUpwardClausure (a : A) :
-  (ElementDownwardClausure P a) = (ElementUpwardClausure (DualPOSET P) a) := by
-  have h := ElementUpwardClausure_Is_Dual_ElementDownwardClausure (DualPOSET P) a
+theorem ElementDownwardClosure_Is_Dual_ElementUpwardClosure (a : A) :
+  (ElementDownwardClosure P a) = (ElementUpwardClosure (DualPOSET P) a) := by
+  have h := ElementUpwardClosure_Is_Dual_ElementDownwardClosure (DualPOSET P) a
   rw [Dual_Dual_Is_OG] at h
   exact h
