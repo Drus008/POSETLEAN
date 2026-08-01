@@ -5,6 +5,8 @@ import POSET.SubsetTypes.ClosedSubsets.Defs
 variable {A : Type} (P : POSET A)
 local infix:50 " ≤ " => P.rel
 
+
+
 theorem EmptyIsUpward : UpwardClosed P emptySet := by
   unfold UpwardClosed
   intro a x
@@ -16,6 +18,7 @@ theorem EmptyIsDownward : DownwardClosed P emptySet := by
   intro a x
   rw [emptySet]
   simp
+
 
 
 theorem UniversIsUpward : UpwardClosed P universeSet := by

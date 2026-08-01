@@ -5,40 +5,57 @@ import POSET.Sets.Defs
 variable {A : Type} (P : POSET A)
 local infix:50 " ≤ " => P.rel
 
-theorem UpwardClausure_Is_UpwardClosed (P : POSET A) (S : A → Prop) :
-  UpwardClosed P (UpwardClausure P S) := by
+theorem UpwardClosure_Is_UpwardClosed (P : POSET A) (S : A → Prop) :
+  UpwardClosed P (UpwardClosure P S) := by
   unfold UpwardClosed
-  intro a x h
-  have ha := h.right
-  have h := h.left
-  unfold UpwardClausure at h
-  obtain ⟨a',ha'⟩ := h
-  have hx := P.trans a' a x ha'.right ha
-  unfold UpwardClausure
-  exists a'
-  constructor
-  · exact ha'.left
-  · exact hx
+  intro a x h h1
+  unfold UpwardClosure at h
+  obtain ⟨a1, ha1⟩ := h
+  unfold UpwardClosure
+  have h1 := P.trans a1 a x ha1.right h1
+  exact ⟨a1, ha1.left, h1⟩
 
-theorem DownwardClausure_Is_DownwardClosed (P : POSET A) (S : A → Prop) :
-  DownwardClosed P (DownwardClausure P S) := by
-  have h := UpwardClausure_Is_UpwardClosed (DualPOSET P) S
-  rw [DownwardClausure_Is_Dual_UpwardClausure]
+theorem DownwardClosure_Is_DownwardClosed (P : POSET A) (S : A → Prop) :
+  DownwardClosed P (DownwardClosure P S) := by
+  have h := UpwardClosure_Is_UpwardClosed (DualPOSET P) S
+  rw [DownwardClosure_Is_Dual_UpwardClosure]
   exact Dual_UpwardClosed_Is_DownwardClosed P h
 
-theorem ElementUpwardClausure_Is_Singleton_UpwardClausure (P : POSET A) (a : A) :
-  (ElementUpwardClausure P a) = UpwardClausure P (unitarySet a) := by
+theorem ElementUpwardClosure_Is_Singleton_UpwardClosure (P : POSET A) (a : A) :
+  (ElementUpwardClosure P a) = UpwardClosure P (unitarySet a) := by
   funext
   apply propext
   constructor
-  · unfold ElementUpwardClausure UpwardClausure
+  · unfold ElementUpwardClosure UpwardClosure
     simp [unitarySet]
-  · unfold ElementUpwardClausure UpwardClausure
+  · unfold ElementUpwardClosure UpwardClosure
     simp [unitarySet]
 
 
-theorem ElementDownwardClausure_Is_Singleton_DownwardClausure (P : POSET A) (a : A) :
-  (ElementDownwardClausure P a) = DownwardClausure P (unitarySet a) := by
-  have h := ElementUpwardClausure_Is_Singleton_UpwardClausure (DualPOSET P) a
-  rw [ElementDownwardClausure_Is_Dual_ElementUpwardClausure, DownwardClausure_Is_Dual_UpwardClausure]
+theorem ElementDownwardClosure_Is_Singleton_DownwardClosure (P : POSET A) (a : A) :
+  (ElementDownwardClosure P a) = DownwardClosure P (unitarySet a) := by
+  have h := ElementUpwardClosure_Is_Singleton_UpwardClosure (DualPOSET P) a
+  rw [ElementDownwardClosure_Is_Dual_ElementUpwardClosure, DownwardClosure_Is_Dual_UpwardClosure]
   exact h
+
+theorem UpwardClosure_UpwardClosed_Is_Itself {P : POSET A} {S : A → Prop} (h : UpwardClosed P S) :
+  (UpwardClosure P S) = S := by
+  funext x
+  apply propext
+  unfold UpwardClosure
+  unfold UpwardClosed at h
+  constructor
+  · intro h1
+    obtain ⟨a, h1⟩ := h1
+    exact h a x h1.left h1.right
+  · intro h1
+    have hx := P.refl x
+    exact ⟨x, h1, hx⟩
+
+theorem DownwardClosure_DownwardClosed_Is_Itself {P : POSET A} {S: A → Prop} (h : DownwardClosed P S) :
+  (DownwardClosure P S) = S := by
+  rw [DownwardClosure_Is_Dual_UpwardClosure]
+  have h := DownwardClosed_Is_Dual_UpwardClosed P h
+  exact UpwardClosure_UpwardClosed_Is_Itself h
+
+-- The reciprocal propositions are also true
