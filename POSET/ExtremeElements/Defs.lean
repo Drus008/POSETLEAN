@@ -8,6 +8,10 @@ def MaxElement (M : A) : Prop := ∀ x : A, x ≤ M
 
 def MinElement (m : A) : Prop := ∀ x : A, m ≤ x
 
+def Coatom (c : A) : Prop := ∃ M : A, (MaxElement P M ∧ c ≠ M ∧ (∀ x : A, c ≤ x → (x = c ∨ x = M)))
+
+def Atom (a : A) : Prop := ∃ m : A, (MinElement P m ∧ a ≠ m ∧ (∀ x : A, x ≤ a → (x = a ∨ x = m)))
+
 def MaximalElement (M : A) : Prop := ∀ x : A, M ≤ x → x=M
 
 def MinimalElement (m : A) : Prop := ∀ x : A, x ≤ m → x=m

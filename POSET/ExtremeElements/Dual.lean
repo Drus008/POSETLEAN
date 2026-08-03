@@ -31,6 +31,18 @@ theorem Dual_Min_Is_Max {m : A} (h : MinElement (DualPOSET P) m) : MaxElement P 
   rw [Dual_Dual_Is_OG P] at h2
   exact h2
 
+theorem Coatom_Is_Dual_Atom {c : A} (h : Coatom P c) : Atom (DualPOSET P) c := by
+  trivial
+
+theorem Atom_Is_Dual_Coatom {a : A} (h : Atom P a) : Coatom (DualPOSET P) a := by
+  trivial
+
+theorem Dual_Coatom_Is_Atom {c : A} (h : Coatom (DualPOSET P) c) : Atom P c := by
+  trivial
+
+theorem Dual_Atom_Is_Coatom {c : A} (h : Atom (DualPOSET P) c) : Coatom P c := by
+  trivial
+
 theorem Maximal_Is_Dual_Minimal {M : A} (h : MaximalElement P M) : MinimalElement (DualPOSET P) M
   := by
   unfold MinimalElement DualPOSET
