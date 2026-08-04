@@ -2,6 +2,21 @@ import POSET.Sets.Defs
 
 variable {A : Type}
 
+section empty
+
+theorem defEmpty1 {S : A → Prop} (h : ¬∃ x : A, S x) : S = @emptySet A := by
+  funext x
+  apply propext
+  unfold emptySet
+  constructor
+  · intro hS
+    have hS : ∃ x : A, S x := ⟨x,hS⟩
+    exact h hS
+  · intro h
+    contradiction
+
+end empty
+
 
 section unitary
 
@@ -12,6 +27,21 @@ theorem UnitarySet_Determines_Element {a b : A} (h : (unitarySet a) = (unitarySe
   have h2 : a = a := by rfl
   rw [h1] at h2
   exact h2
+
+theorem Unitary_Not_Empty (a : A) : unitarySet a ≠ emptySet := by
+  unfold unitarySet emptySet
+  intro h
+  have h := congrFun h a
+  have ha : a = a := rfl
+  rw [h] at ha
+  exact ha
+
+theorem Unitary_Subset_Containing_Element (a : A) (S : A → Prop) (h : S a) :
+  subset (unitarySet a) S := by
+  unfold subset unitarySet
+  intro x h1
+  rw [← h1] at h
+  exact h
 
 end unitary
 
@@ -41,3 +71,26 @@ section pair
 
 
 end pair
+
+section subset
+
+theorem SubsetReflexive (S : A → Prop) : subset S S := by
+  unfold subset
+  intro x h
+  exact h
+
+theorem SubsetTransitive {S1 S2 S3 : A → Prop} (h1 : subset S1 S2) (h2 : subset S2 S3)
+  : subset S1 S3 := by
+  unfold subset
+  intro x
+  intro h
+  exact h2 x (h1 x h)
+
+theorem SubsetAntisymetric {S1 S2 : A → Prop} (h1 : subset S1 S2) (h2 : subset S2 S1)
+  : S1 = S2 := by
+  ext x
+  constructor
+  · exact h1 x
+  · exact h2 x
+
+end subset
