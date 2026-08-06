@@ -72,3 +72,28 @@ theorem LowerBound_In_Subset_Is_Infimum {S : A → Prop} {I : A} (h : LowerBound
   have h' := LowerBound_Is_Dual_UpperBound h
   have h' := UpperBound_In_Subset_Is_Supremum h' hI
   exact Supremum_Is_Dual_Infimum h'
+
+theorem Max_In_Subset_Is_Supremum {M : A} {S : A → Prop} (h : MaxElement P M) (hS : S M) :
+  Supremum P M S := by
+  have h := Max_Is_UpperBound h S
+  exact UpperBound_In_Subset_Is_Supremum h hS
+
+theorem Min_In_Subset_Is_Infimum {m : A} {S : A → Prop} (h : MinElement P m) (hS : S m) :
+  Infimum P m S := by
+  have h := Min_Is_Dual_Max h
+  have h := Max_In_Subset_Is_Supremum h hS
+  exact Dual_Supremum_Is_Infimum h
+
+
+theorem Coatom_Diferent_Max {c M : A} (hc : Coatom P c) (hM : MaxElement P M) : c ≠ M := by
+  unfold Coatom at hc
+  have ⟨M', h⟩ := hc
+  have h' := h.left
+  have h:= h.right.left
+  rw [Max_unique hM h']
+  exact h
+
+theorem Atom_Diferent_Min (a m : A) (ha : Atom P a) (hm : MinElement P m) : a ≠ m := by
+  have ha := Atom_Is_Dual_Coatom ha
+  have hm := Min_Is_Dual_Max hm
+  exact Coatom_Diferent_Max ha hm

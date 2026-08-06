@@ -1,5 +1,4 @@
-import POSET.Sets.Defs
-
+import POSET.Sets.Basic
 import POSET.ExtremeElements.Defs
 import POSET.DualOrder
 import POSET.ExtremeElements.BasicProp
@@ -109,6 +108,13 @@ theorem Greater_Two_Elements_UpperBound_Pair {P : POSET A} {a b U : A} (ha : P.r
     rw [hb']
     exact hb
 
+theorem Lesser_Two_Elements_LowerBound_Pair {P : POSET A} {a b L : A} (ha : P.rel L a) (hb : P.rel L b) :
+  LowerBound P L (pairSet a b) := by
+  have ha : (DualPOSET P).rel a L := ha
+  have hb : (DualPOSET P).rel b L := hb
+  have h := Greater_Two_Elements_UpperBound_Pair  ha hb
+  exact Dual_UpperBound_Is_LowerBound h
+
 theorem UpperBound_Pair_Greater_Two_Elements {P : POSET A} {a b U : A} (h : UpperBound P U (pairSet a b)) :
   (P.rel a U) ∧ (P.rel b U) := by
   unfold UpperBound pairSet at h
@@ -117,6 +123,32 @@ theorem UpperBound_Pair_Greater_Two_Elements {P : POSET A} {a b U : A} (h : Uppe
   simp at ha
   simp at hb
   exact ⟨ha, hb⟩
+
+theorem LowerBound_Pair_Lower_Two_Elements {P : POSET A} {a b L : A} (h : LowerBound P L (pairSet a b)) :
+  (P.rel L a) ∧ (P.rel L b) := by
+  have h := LowerBound_Is_Dual_UpperBound h
+  exact UpperBound_Pair_Greater_Two_Elements h
+
+theorem Greater_Is_UpperBound_Pair {P : POSET A} {a b : A} (h : P.rel a b) : UpperBound P b (pairSet a b) := by
+  have h' := P.refl b
+  exact Greater_Two_Elements_UpperBound_Pair h h'
+
+theorem Lower_Is_LowerBound_Pair {P : POSET A} {a b : A} (h : P.rel a b) : LowerBound P a (pairSet a b) := by
+  have h : (DualPOSET P).rel b a := h
+  have h' := Greater_Is_UpperBound_Pair h
+  rw [PairSet_Is_Comm a b]
+  exact Dual_UpperBound_Is_LowerBound h'
+
+theorem Greater_Is_Sup_Pair {P : POSET A} {a b : A} (h : P.rel a b) : Supremum P b (pairSet a b) := by
+  have h := Greater_Is_UpperBound_Pair h
+  have h' := R_In_Pair a b
+  exact UpperBound_In_Subset_Is_Supremum h h'
+
+theorem Lower_Is_Inf_Pair {P : POSET A} {a b : A} (h : P.rel a b) : Infimum P a (pairSet a b) := by
+  have h : (DualPOSET P).rel b a := h
+  have h := Greater_Is_Sup_Pair h
+  rw [PairSet_Is_Comm a b]
+  exact Dual_Supremum_Is_Infimum h
 
 end pair
 

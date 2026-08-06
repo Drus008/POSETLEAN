@@ -47,6 +47,38 @@ end unitary
 
 section pair
 
+
+theorem PairSet_Is_Comm (a b : A) : pairSet a b = pairSet b a := by
+  funext x
+  ext
+  unfold pairSet
+  constructor
+  · intro h
+    cases h with
+    | inl h =>
+      right
+      exact h
+    | inr h =>
+      left
+      exact h
+  · intro h
+    cases h with
+    | inl h =>
+      right
+      exact h
+    | inr h =>
+      left
+      exact h
+
+theorem L_In_Pair (a b : A) : (pairSet a b) a := by
+  unfold pairSet
+  left
+  rfl
+
+theorem R_In_Pair (a b : A) : (pairSet a b) b:= by
+  rw [PairSet_Is_Comm]
+  exact L_In_Pair b a
+
 -- theorem PairSet_Determines_Elements {a1 b1 a2 b2 : A} (h : (pairSet a1 b1) = (pairSet a2 b2))
 --  : (((a1 = a2) ∧ (b1 = b2)) ∨ ((a1 = b2) ∧ (b1 = a2))) := by
 --  unfold pairSet at h
