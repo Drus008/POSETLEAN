@@ -1,6 +1,7 @@
 import POSET.SubsetTypes.ClosedSubsets.Defs
 import POSET.SubsetTypes.ClosedSubsets.Dual
 import POSET.Sets.Defs
+import POSET.Sets.SetFamilies.Defs
 
 variable {A : Type} (P : POSET A)
 local infix:50 " ≤ " => P.rel
@@ -59,3 +60,20 @@ theorem DownwardClosure_DownwardClosed_Is_Itself {P : POSET A} {S: A → Prop} (
   exact UpwardClosure_UpwardClosed_Is_Itself h
 
 -- The reciprocal propositions are also true
+
+theorem UnionUpwardClosed_Is_UpwardClosed {P : POSET A} {F : Family A} (h : subset F (UpwardClosed P)) :
+  UpwardClosed P (UnionF F) := by
+  unfold UpwardClosed UnionF
+  intro a x hF hx
+  have ⟨S,hF,ha⟩ := hF
+  have hS := h S hF
+  have h := hS a x ha hx
+  exact ⟨S,hF,h⟩
+
+theorem UnionDownwardClosed_Is_DownwardClosed {P : POSET A} {F : Family A} (h : subset F (DownwardClosed P)) :
+  DownwardClosed P (UnionF F) := by
+  apply Dual_UpwardClosed_Is_DownwardClosed
+  apply UnionUpwardClosed_Is_UpwardClosed
+  intro S hS
+  have hS := h S hS
+  exact DownwardClosed_Is_Dual_UpwardClosed P hS

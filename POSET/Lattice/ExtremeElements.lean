@@ -1,26 +1,36 @@
+import POSET.Lattice.Dual
 import POSET.ExtremeElements.BasicProp
-import POSET.Lattice.Basic
+import POSET.ExtremeElements.Subsets
+import POSET.Sets.Basic
+import POSET.ExtremeElements.BasicProp
 
 variable {A : Type}
 
-theorem Max_Is_Absorbent_Join {J : JoinSemilattice A} {M : A} (h : MaxElement J.toPOSET M) (a : A) : J.join M a = M := by
-  have h := h a
-  rw [Join_Is_Comm]
-  exact Greater_Is_Join h
+theorem Join_Is_UpperBound_Pair (J : JoinSemilattice A) (a b : A) : UpperBound J.toPOSET (J.join a b) (pairSet a b) := by
+  exact Greater_Two_Elements_UpperBound_Pair (J.up1 a b) (J.up2 a b)
 
-theorem Min_Is_Absorbent_Meet {M : MeetSemilattice A} {m : A} (h : MinElement M.toPOSET m) (a : A) : M.meet m a = m := by
+theorem Meet_Is_UpperBound_Pair (M : MeetSemilattice A) (a b : A) : LowerBound M.toPOSET (M.meet a b) (pairSet a b) := by
   let J := Meet_Is_Dual_Join M
-  have h := Min_Is_Dual_Max h
-  have h := @Max_Is_Absorbent_Join A J m h a
-  exact h
+  have h := Join_Is_UpperBound_Pair J a b
+  exact Dual_UpperBound_Is_LowerBound h
 
-theorem Max_Is_Identity_Meet {M : MeetSemilattice A} {m : A} (h : MaxElement M.toPOSET m) (a : A) : M.meet m a = a := by
-  have h := h a
-  rw [Meet_Is_Comm]
-  exact Lower_Is_Meet h
+theorem Join_Is_Sup_Pair (J : JoinSemilattice A) (a b : A) : Supremum J.toPOSET (J.join a b) (pairSet a b) := by
+  unfold Supremum
+  constructor
+  · exact Join_Is_UpperBound_Pair J a b
+  · intro U h
+    have h' := UpperBound_Pair_Greater_Two_Elements h
+    exact J.sup a b U h'
 
-theorem Min_Is_Identity_Meet {J : JoinSemilattice A} {m : A} (h : MinElement J.toPOSET m) (a : A) : J.join m a = a := by
-  let M := Join_Is_Dual_Meet J
-  have h := Min_Is_Dual_Max h
-  have h := @Max_Is_Identity_Meet A M m h a
-  exact h
+theorem Meet_Is_Inf_Pair (M : MeetSemilattice A) (a b : A) : Infimum M.toPOSET (M.meet a b) (pairSet a b) := by
+  let J := Meet_Is_Dual_Join M
+  have h := Join_Is_Sup_Pair J a b
+  exact Dual_Supremum_Is_Infimum h
+
+theorem Sup_Pair_Is_Join {J : JoinSemilattice A} {a b s : A} (h : Supremum J.toPOSET s (pairSet a b)) : s = J.join a b := by
+  have h' := Join_Is_Sup_Pair J a b
+  exact Sup_Unique h h'
+
+theorem Inf_Pair_Is_Meet {M : MeetSemilattice A} {a b i : A} (h : Infimum M.toPOSET i (pairSet a b)) : i = M.meet a b := by
+  have h := Infimum_Is_Dual_Supremum h
+  exact @Sup_Pair_Is_Join A (Meet_Is_Dual_Join M) a b i h
