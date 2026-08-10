@@ -12,12 +12,14 @@ structure Monotone where
 instance : CoeFun (Monotone P1 P2) (fun _ => A → B) where
   coe f := f.app
 
+
 structure Reflecting where
   app : A → B
   ref : ∀ x y : A, (app x) ≤2 (app y) → x ≤1 y
 
 instance : CoeFun (Reflecting P1 P2) (fun _ => A → B) where
   coe f := f.app
+
 
 structure Embedding extends (Monotone P1 P2), (Reflecting P1 P2)
 

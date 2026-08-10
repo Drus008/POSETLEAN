@@ -1,5 +1,6 @@
 import POSET.Morphisms.Defs
 import POSET.DualOrder
+import POSET.Sets.Maps.Defs
 
 variable {A : Type} {P : POSET A}
 
@@ -54,5 +55,19 @@ theorem Decreasing_Is_Decreasing_Dual {f : A → A} (h : Decreasing P f) : Decre
     have h2 := DualMonotone_Is_Decreasing M2
     exact h2
 
+
+theorem Reflecting_Is_Injective (f : Reflecting P P') : injective f := by
+    intro x y h
+    have h1 := P'.refl (f x)
+    rw (config := { occs := .pos [2] }) [h] at h1
+    have h1 := f.ref x y h1
+    have h2 := P'.refl (f y)
+    rw (config := { occs := .pos [2] }) [← h] at h2
+    have h2 := f.ref y x h2
+    exact P.antisym x y h1 h2
+
+
+theorem Embedding_Is_Injective (f : Embedding P P') : injective f := by
+    exact Reflecting_Is_Injective f.toReflecting
 
 end
