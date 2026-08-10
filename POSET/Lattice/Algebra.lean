@@ -17,6 +17,12 @@ theorem Meet_Is_Comm (M : MeetSemilattice A) (a b : A) : M.meet a b = M.meet b a
   have h1 := Join_Is_Comm J a b
   exact h1
 
+def Join_Lattice_Comm (L : Lattice A) (a b : A) : L.join a b = L.join b a := by
+  exact Join_Is_Comm L.toJoinSemilattice a b
+
+def Meet_Lattice_Comm (L : Lattice A) (a b : A) : L.meet a b = L.meet b a := by
+  exact Meet_Is_Comm L.toMeetSemilattice a b
+
 theorem Greater_Is_Join {J : JoinSemilattice A} {a b : A} (h : J.rel a b) : J.join a b = b := by
   have h := Greater_Is_Sup_Pair h
   exact (Sup_Pair_Is_Join h).symm
@@ -76,6 +82,30 @@ theorem Identity_Join_Is_Min {J : JoinSemilattice A} {m : A} (h : ∀ a : A, J.j
   apply Dual_Max_Is_Min
   have h : ∀ a : A, (Join_Is_Dual_Meet J).meet m a = a := h
   exact Identity_Meet_Is_Max h
+
+theorem Join_Greater_Composition (J : JoinSemilattice A) (a b c : A) :
+  J.rel (J.join a (J.join b c)) (J.join (J.join a b) c) := by
+  have ha := J.up1 a b
+  have hb := J.up2 a b
+  have hJ := J.up1 (J.join a b) c
+  have hc := J.up2 (J.join a b) c
+  have ha := J.trans a (J.join a b) (J.join (J.join a b) c) ha hJ
+  have hb := J.trans b (J.join a b) (J.join (J.join a b) c) hb hJ
+  have hJ := J.sup b c (J.join (J.join a b) c) ⟨hb,hc⟩
+  exact J.sup a (J.join b c) (J.join (J.join a b) c) ⟨ha,hJ⟩
+
+-- TODO: Meet
+
+theorem Join_Associativity (J : JoinSemilattice A) (a b c : A) : J.join a (J.join b c) = J.join (J.join a b) c := by
+  have h := Join_Greater_Composition J a b c
+  have h' := Join_Greater_Composition J c b a
+  simp [Join_Is_Comm] at h'
+  rw [Join_Is_Comm J c _] at h'
+  exact J.antisym _ _ h h'
+
+theorem Meet_Associativity (M : MeetSemilattice A) (a b c : A) : M.meet a (M.meet b c) = M.meet (M.meet a b) c := by
+  let J := Meet_Is_Dual_Join M
+  exact Join_Associativity J a b c
 
 theorem Absortion_Law1 (L : Lattice A) (a b : A) : L.meet a (L.join a b) = a := by
   have h := L.up1 a b
