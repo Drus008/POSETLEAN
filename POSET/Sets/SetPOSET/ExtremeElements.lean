@@ -1,5 +1,6 @@
+import POSET.Sets.SetFamilies.Defs
 import POSET.Sets.SetPOSET.Defs
-import POSET.ExtremeElements.Defs
+import POSET.ExtremeElements.BasicProp
 import POSET.Sets.Basic
 
 variable (A : Type)
@@ -21,7 +22,13 @@ theorem Empty_Is_Min : MinElement (SetPOSET A) emptySet := by
   intro h
   contradiction
 
--- This could be several usfull lemas
+theorem Universe_Is_Maximal : MaximalElement (SetPOSET A) universeSet := by
+  exact Max_Is_Maximal (Universe_Is_Max A)
+
+theorem Empty_Is_Minimal : MinimalElement (SetPOSET A) emptySet := by
+  exact Min_Is_Minimal (Empty_Is_Min A)
+
+-- This could contain several usfull lemas
 theorem Unitary_Is_Atom (a : A) : Atom (SetPOSET A) (unitarySet a) := by
   have h := Empty_Is_Min A
   unfold Atom

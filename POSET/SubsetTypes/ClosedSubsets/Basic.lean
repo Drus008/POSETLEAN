@@ -59,7 +59,6 @@ theorem DownwardClosure_DownwardClosed_Is_Itself {P : POSET A} {S: A → Prop} (
   have h := DownwardClosed_Is_Dual_UpwardClosed P h
   exact UpwardClosure_UpwardClosed_Is_Itself h
 
--- The reciprocal propositions are also true
 
 theorem UnionUpwardClosed_Is_UpwardClosed {P : POSET A} {F : Family A} (h : subset F (UpwardClosed P)) :
   UpwardClosed P (UnionF F) := by
