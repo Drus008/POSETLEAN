@@ -6,11 +6,11 @@ variable {A : Type}
 
 theorem PowerSet_Contains_Universe (A : Type) :
   PowerSet (@universeSet A) := by
-  sorry
+  trivial
 
 theorem PowerSet_Contains_Empty (A : Type) :
   PowerSet (@emptySet A) := by
-  sorry
+  trivial
 
 theorem Union_Empty_Is_Empty (A : Type) :
   UnionF (@emptySet (A → Prop)) = @emptySet A := by
@@ -52,9 +52,8 @@ theorem If_Family_Contains_Empty__Intersection_Is_Empty {F : Family A}
 
 theorem Union_PowerSet_Is_Universe (A : Type) :
   UnionF (@PowerSet A) = @universeSet A := by
-  -- If_Family_Contains_Univers__Union_Is_Univers
-  -- PowerSet_Contains_Universe
-  sorry
+  have h := PowerSet_Contains_Universe A
+  exact If_Family_Contains_Univers__Union_Is_Univers  h
 
 theorem Intersection_PowerSet_Is_Empty (A : Type) :
   InterseccionF (@PowerSet A) = @emptySet A := by
