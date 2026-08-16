@@ -26,8 +26,14 @@ theorem Union_Empty_Is_Empty (A : Type) :
     trivial
 
 theorem Intersection_Empty_Is_Universe (A : Type) :
-  InterseccionF (@emptySet (A → Prop)) = @universeSet A :=
-  sorry
+  InterseccionF (@emptySet (A → Prop)) = @universeSet A := by
+  funext x
+  ext
+  constructor
+  · intro h
+    trivial
+  · intro h S h
+    contradiction
 
 
 theorem Element_Family_Subset_Union {S : A → Prop} {F : Family A}
@@ -48,7 +54,8 @@ theorem If_Family_Contains_Univers__Union_Is_Univers {F : Family A}
 
 theorem If_Family_Contains_Empty__Intersection_Is_Empty {F : Family A}
   (h : F (@emptySet A)) : InterseccionF F = @emptySet A := by
-  sorry
+  have h := Intersection_Subset_Element_Family h
+  exact (Empty_Is_Minimal A) _ h
 
 theorem Union_PowerSet_Is_Universe (A : Type) :
   UnionF (@PowerSet A) = @universeSet A := by
@@ -57,7 +64,5 @@ theorem Union_PowerSet_Is_Universe (A : Type) :
 
 theorem Intersection_PowerSet_Is_Empty (A : Type) :
   InterseccionF (@PowerSet A) = @emptySet A := by
-  -- If_Family_Contains_Empty__Intersection_Is_Empty
-  -- PowerSet_Contains_Empty
-
-  sorry
+  have h := PowerSet_Contains_Empty A
+  exact If_Family_Contains_Empty__Intersection_Is_Empty h

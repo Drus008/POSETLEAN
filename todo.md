@@ -7,8 +7,7 @@
 
 ## POSET Set
 
-- Unión = Supremum
-- Intersection = Infimum
+- SetPOSET is Lattice
 
 ## Down Map
 

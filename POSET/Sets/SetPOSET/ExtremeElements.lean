@@ -48,3 +48,38 @@ theorem Unitary_Is_Atom (a : A) : Atom (SetPOSET A) (unitarySet a) := by
     exact h2
   · right
     exact defEmpty1 h1
+
+theorem Union_Is_UpperBound (F : Family A) : UpperBound (SetPOSET A) (UnionF F) F := by
+  intro S h
+  change subset S (UnionF F)
+  intro x hx
+  unfold UnionF
+  exact ⟨S, h, hx⟩
+
+theorem Intersection_Is_LowerBound (F : Family A) : LowerBound (SetPOSET A) (InterseccionF F) F := by
+  intro S h
+  change subset (InterseccionF F) S
+  intro x hx
+  exact hx S h
+
+theorem Union_Is_Sup (F : Family A) : Supremum (SetPOSET A) (UnionF F) F := by
+  constructor
+  · exact Union_Is_UpperBound A F
+  · intro U h
+    change subset _ U
+    intro x hx
+    have ⟨S, hx⟩ := hx
+    have h := h S hx.left
+    change subset S U at h
+    exact h x hx.right
+
+theorem Interseccion_Is_Inf (F : Family A) : Infimum (SetPOSET A) (InterseccionF F) F := by
+  constructor
+  · exact Intersection_Is_LowerBound A F
+  · intro L h
+    change subset L _
+    intro x hx S hS
+    unfold LowerBound at h
+    have h := h S hS
+    change subset L S at h
+    exact h x hx
