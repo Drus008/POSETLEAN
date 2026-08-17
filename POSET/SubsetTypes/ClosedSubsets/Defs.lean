@@ -18,3 +18,13 @@ def UpwardClosure (S : A → Prop) (x : A) : Prop :=
 
 def DownwardClosure (S : A → Prop) (x : A) : Prop :=
   ∃ a : A, (S a) ∧ (x ≤ a)
+
+def UDirectedSet (S : A → Prop) : Prop :=
+  ∀ a b : A, ((S a) ∧ (S b)) →  ∃ c : A, (S c) ∧ (a ≤ c) ∧ (b ≤ c)
+
+def DDirectedSet (S : A → Prop) : Prop :=
+  ∀ a b : A, ((S a) ∧ (S b)) → ∃ c : A, (S c) ∧ (c ≤ a) ∧ (c ≤ b)
+
+def Ideal (S : A → Prop) : Prop := (DownwardClosed P S) ∧ (DDirectedSet P S)
+
+def Filter (S : A → Prop) : Prop := (UpwardClosed P S) ∧ (UDirectedSet P S)

@@ -58,3 +58,36 @@ theorem ElementDownwardClosure_Is_Dual_ElementUpwardClosure (a : A) :
   have h := ElementUpwardClosure_Is_Dual_ElementDownwardClosure (DualPOSET P) a
   rw [Dual_Dual_Is_OG] at h
   exact h
+
+
+theorem UDirectedSet_Is_Dual_DDirectedSet {S : A → Prop} (h : UDirectedSet P S) :
+  DDirectedSet (DualPOSET P) S := by
+  sorry
+
+theorem DDirectedSet_Is_Dual_UDirectedSet {S : A → Prop} (h : DDirectedSet P S) :
+  UDirectedSet (DualPOSET P) S := by
+  sorry
+
+theorem Dual_UDirectedSet_Is_DDirectedSet {S : A → Prop} (h : UDirectedSet (DualPOSET P) S) :
+  DDirectedSet P S := by
+  sorry
+
+theorem Dual_DDirectedSet_Is_UDirectedSet {S : A → Prop} (h : DDirectedSet (DualPOSET P) S) :
+  UDirectedSet P S := by
+  sorry
+
+theorem Filter_Is_Dual_Ideal {S : A → Prop} (h : Filter P S) :
+  Ideal (DualPOSET P) S := by
+  sorry
+
+theorem Ideal_Is_Dual_Filter {S : A → Prop} (h : Ideal P S) :
+  Filter (DualPOSET P) S := by
+  sorry
+
+theorem Dual_Filter_Is_Ideal {S : A → Prop} (h : Filter (DualPOSET P) S) :
+  Ideal P S := by
+  sorry
+
+theorem Dual_Ideal_Is_Filter {S : A → Prop} (h : Ideal (DualPOSET P) S) :
+  Filter P S := by
+  sorry
