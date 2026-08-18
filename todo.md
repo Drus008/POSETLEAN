@@ -1,6 +1,10 @@
 
 # Pending things
 
+## SubsetTypes
+
+- If UpperClosure is DDirected then it is DDirected? (UClosure is filter => DDirected)
+
 ## LOSET
 
 - Loset is lattice

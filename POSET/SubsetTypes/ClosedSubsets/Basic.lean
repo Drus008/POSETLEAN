@@ -59,6 +59,41 @@ theorem DownwardClosure_DownwardClosed_Is_Itself {P : POSET A} {S: A → Prop} (
   have h := DownwardClosed_Is_Dual_UpwardClosed P h
   exact UpwardClosure_UpwardClosed_Is_Itself h
 
+theorem DownwardClosure_Is_Subset (P : POSET A) (S : A → Prop) :
+  subset S (DownwardClosure P S) := by
+  intro x h
+  exact ⟨x, h, P.refl x⟩
+
+theorem UpwardClosure_Is_Subset (P : POSET A) (S : A → Prop) :
+  subset S (UpwardClosure P S) := by
+  intro x h
+  exact ⟨x, h, P.refl x⟩
+
+theorem UClosure_DDirected_Is_DDirected {P : POSET A} {S : A → Prop} (h : DDirectedSet P S) :
+  DDirectedSet P (UpwardClosure P S) := by
+  intro a b ⟨⟨a',ha⟩,⟨b',hb⟩⟩
+  have ⟨c,hc⟩ := h a' b' ⟨ha.left,hb.left⟩
+  have ha := P.trans c a' a hc.right.left ha.right
+  have hb := P.trans c b' b hc.right.right hb.right
+  have hc := UpwardClosure_Is_Subset P S c hc.left
+  exact ⟨c,hc,ha,hb⟩
+
+theorem DClosure_UDirected_Is_UDirected {P : POSET A} {S : A → Prop} (h : UDirectedSet P S) :
+  UDirectedSet P (DownwardClosure P S) := by
+  have h := UDirectedSet_Is_Dual_DDirectedSet P h
+  apply Dual_DDirectedSet_Is_UDirectedSet P
+  have h := UClosure_DDirected_Is_DDirected h
+  apply h
+
+theorem UClosure_DDirected_Is_Filter {P : POSET A} {S : A → Prop} (h : DDirectedSet P S) :
+  Filter P (UpwardClosure P S) :=
+  ⟨UpwardClosure_Is_UpwardClosed P S, UClosure_DDirected_Is_DDirected h⟩
+
+theorem DClosure_UDirected_Is_Ideal {P : POSET A} {S : A → Prop} (h : UDirectedSet P S) :
+  Ideal P (DownwardClosure P S) :=
+  ⟨DownwardClosure_Is_DownwardClosed P S, DClosure_UDirected_Is_UDirected h⟩
+
+section Families
 
 theorem UnionUpwardClosed_Is_UpwardClosed {P : POSET A} {F : Family A} (h : subset F (UpwardClosed P)) :
   UpwardClosed P (UnionF F) := by
@@ -76,3 +111,5 @@ theorem UnionDownwardClosed_Is_DownwardClosed {P : POSET A} {F : Family A} (h : 
   intro S hS
   have hS := h S hS
   exact DownwardClosed_Is_Dual_UpwardClosed P hS
+
+end Families
