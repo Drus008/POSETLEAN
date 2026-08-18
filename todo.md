@@ -8,7 +8,6 @@
 ## LOSET
 
 - Loset is lattice
-- Chain relation
 
 ## POSET Set
 

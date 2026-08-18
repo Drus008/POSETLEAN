@@ -42,5 +42,3 @@ theorem Union_Chain_Share_Upp_Low_Bound_Is_Chain {B : A} {CU CL : A → Prop}
       exact P.trans x B y hx hy
     case inr hy =>
       exact hCL x y hx hy
-
--- TODO: Chain and LOSET!
