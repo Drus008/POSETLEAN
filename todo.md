@@ -1,12 +1,6 @@
 
 # Pending things
 
-## Lattice
-
-- DirectedSet relation
-
-- Latticce + directed set => filter?
-
 ## LOSET
 
 - Loset is lattice

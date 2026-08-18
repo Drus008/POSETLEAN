@@ -17,6 +17,12 @@ def Join_Is_Dual_Meet (J : JoinSemilattice A) : MeetSemilattice A where
   down2 := J.up2
   inf := J.sup
 
+theorem DualPOSET_Join_Is_POSET_DualJoin (J : JoinSemilattice A) :
+  (DualPOSET J.toPOSET) = (Join_Is_Dual_Meet J).toPOSET := rfl
+
+theorem DualPOSET_Meet_Is_POSET_DualMeet (M : MeetSemilattice A) :
+  (DualPOSET M.toPOSET) = (Meet_Is_Dual_Join M).toPOSET := rfl
+
 theorem Dual_Meet_Is_Join (M : MeetSemilattice A) : ∃ J : JoinSemilattice A, M = Join_Is_Dual_Meet J := by
   refine ⟨Meet_Is_Dual_Join M, ?_⟩
   rcases M with ⟨P, meet, down1, down2, inf⟩
