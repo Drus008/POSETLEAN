@@ -1,6 +1,7 @@
 import POSET.SubsetTypes.ClosedSubsets.Defs
 import POSET.SubsetTypes.ClosedSubsets.Dual
-import POSET.Sets.Defs
+import POSET.Sets.Basic
+import POSET.Sets.SetPOSET.ExtremeElements
 import POSET.Sets.SetFamilies.Defs
 import POSET.ExtremeElements.BasicProp
 
@@ -97,6 +98,73 @@ theorem DClosure_UDirected_Is_Ideal {P : POSET A} {S : A → Prop} (h : UDirecte
 
 section extreme
 
+theorem If_DClosed_Has_Max_Then_Is_Universe {P : POSET A} {M : A} {S : A → Prop}
+  (hM : MaxElement P M) (hS : DownwardClosed P S) (hSM : S M) : S = @universeSet A := by
+  apply SubsetAntisymetric
+  · exact Universe_Is_Max A S
+  · intro x _
+    have hx := hM x
+    exact hS M x hSM hx
+
+theorem If_UClosed_Has_Min_Then_Is_Universe {P : POSET A} {m : A} {S : A → Prop}
+  (hm : MinElement P m) (hS : UpwardClosed P S) (hSm : S m) : S = @universeSet A := by
+  have hm := Min_Is_Dual_Max hm
+  have mS := UpwardClosed_Is_Dual_DownwardClosed P hS
+  exact If_DClosed_Has_Max_Then_Is_Universe hm hS hSm
+
+theorem NoEmpty_UClosed_Has_Max {P : POSET A} {M a : A} {U : A → Prop}
+  (hM : MaxElement P M) (hU : UpwardClosed P U) (ha : U a) :
+  U M := by
+  have h := hM a
+  exact hU a M ha h
+
+theorem NoEmpty_DClosed_Has_Min {P : POSET A} {m a : A} {D : A → Prop}
+  (hm : MinElement P m) (hD : DownwardClosed P D) (ha : D a) :
+  D m := by
+  exact hD a m ha (hm a)
+
+theorem UBound_Is_UBound_DClousure {P : POSET A} {u : A} {S : A → Prop}
+  (h : UpperBound P u S) : UpperBound P u (DownwardClosure P S) := by
+  intro x hx
+  have ⟨x', hx', hx⟩ := hx
+  have hu := h x' hx'
+  exact P.trans x x' u hx hu
+
+theorem LBound_Is_LBound_UClosure {P : POSET A} {l : A} {S : A → Prop}
+  (h : LowerBound P l S) : LowerBound P l (UpwardClosure P S) := by
+  rw [UpwardClosure_Is_Dual_DownwardClosure P S]
+  have h := LowerBound_Is_Dual_UpperBound h
+  have h := UBound_Is_UBound_DClousure h
+  exact Dual_UpperBound_Is_LowerBound h
+
+theorem UBound_DClousure_Is_UBound {P : POSET A} {u : A} {S : A → Prop}
+  (h : UpperBound P u (DownwardClosure P S)) : UpperBound P u S := by
+  intro x hx
+  have hx := DownwardClosure_Is_Subset P S x hx
+  exact h x hx
+
+theorem LBound_UClosure_Is_LBound {P : POSET A} {l : A} {S : A → Prop}
+  (h : LowerBound P l (UpwardClosure P S)) : LowerBound P l S := by
+  intro x hx
+  have hx := UpwardClosure_Is_Subset P S x hx
+  exact h x hx
+
+theorem Sup_Is_Sup_DClosure {P : POSET A} {s : A} {S : A → Prop}
+  (hs : Supremum P s S) : Supremum P s (DownwardClosure P S) := by
+  constructor
+  · exact UBound_Is_UBound_DClousure hs.left
+  · intro U h
+    have h := UBound_DClousure_Is_UBound h
+    exact hs.right U h
+
+theorem Inf_Is_Inf_UClosure {P : POSET A} {i : A} {S : A → Prop}
+  (hi : Infimum P i S) : Infimum P i (UpwardClosure P S) := by
+  rw [UpwardClosure_Is_Dual_DownwardClosure]
+  have h := Infimum_Is_Dual_Supremum hi
+  apply Dual_Supremum_Is_Infimum
+  exact Sup_Is_Sup_DClosure h
+
+
 theorem If_Subset_Has_UBound_Then_Is_UDirected {P : POSET A} {U : A} {S : A → Prop}
   (hU : UpperBound P U S) (hS : S U) : UDirectedSet P S := by
   intro a b ⟨ha, hb⟩
@@ -119,6 +187,7 @@ theorem If_Subset_Has_Min_Then_Is_DDirected {P : POSET A} {m : A} {S : A → Pro
   (hm : MinElement P m) (hS : S m) : DDirectedSet P S := by
   have h := Min_Is_LowerBound hm S
   exact If_Subset_Has_LBound_Then_Is_DDirected h hS
+
 end extreme
 
 section Families

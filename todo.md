@@ -5,6 +5,8 @@
 
 - If UpperClosure is DDirected then it is DDirected? (UClosure is filter => DDirected)
 
+- LowerBound LowerSet is inf?
+
 ## LOSET
 
 - Loset is lattice
@@ -20,3 +22,5 @@
 ## Representation theorem on distributive Lattices
 
 ## Product of POSETs
+
+## Zorn Lema
