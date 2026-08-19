@@ -2,6 +2,7 @@ import POSET.SubsetTypes.ClosedSubsets.Defs
 import POSET.SubsetTypes.ClosedSubsets.Dual
 import POSET.Sets.Defs
 import POSET.Sets.SetFamilies.Defs
+import POSET.ExtremeElements.BasicProp
 
 variable {A : Type} (P : POSET A)
 local infix:50 " ≤ " => P.rel
@@ -92,6 +93,33 @@ theorem UClosure_DDirected_Is_Filter {P : POSET A} {S : A → Prop} (h : DDirect
 theorem DClosure_UDirected_Is_Ideal {P : POSET A} {S : A → Prop} (h : UDirectedSet P S) :
   Ideal P (DownwardClosure P S) :=
   ⟨DownwardClosure_Is_DownwardClosed P S, DClosure_UDirected_Is_UDirected h⟩
+
+
+section extreme
+
+theorem If_Subset_Has_UBound_Then_Is_UDirected {P : POSET A} {U : A} {S : A → Prop}
+  (hU : UpperBound P U S) (hS : S U) : UDirectedSet P S := by
+  intro a b ⟨ha, hb⟩
+  have ha := hU a ha
+  have hb := hU b hb
+  exact ⟨U, hS, ha, hb⟩
+
+theorem If_Subset_Has_LBound_Then_Is_DDirected {P : POSET A} {L : A} {S : A → Prop}
+  (hL : LowerBound P L S) (hS : S L) : DDirectedSet P S := by
+  have hL := LowerBound_Is_Dual_UpperBound hL
+  apply Dual_UDirectedSet_Is_DDirectedSet
+  exact If_Subset_Has_UBound_Then_Is_UDirected hL hS
+
+theorem If_Subset_Has_Max_Then_Is_UDirected {P : POSET A} {M : A} {S : A → Prop}
+  (hM : MaxElement P M) (hS : S M) : UDirectedSet P S := by
+  have h := Max_Is_UpperBound hM S
+  exact If_Subset_Has_UBound_Then_Is_UDirected h hS
+
+theorem If_Subset_Has_Min_Then_Is_DDirected {P : POSET A} {m : A} {S : A → Prop}
+  (hm : MinElement P m) (hS : S m) : DDirectedSet P S := by
+  have h := Min_Is_LowerBound hm S
+  exact If_Subset_Has_LBound_Then_Is_DDirected h hS
+end extreme
 
 section Families
 

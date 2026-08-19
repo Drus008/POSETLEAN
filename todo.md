@@ -11,8 +11,12 @@
 
 ## POSET Set
 
-- SetPOSET is Lattice
+- SetPOSET is Lattice (distributive)
 
 ## Down Map
 
 - Down map of sup is unión of down maps
+
+## Representation theorem on distributive Lattices
+
+## Product of POSETs
