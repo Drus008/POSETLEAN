@@ -15,8 +15,32 @@ theorem defEmpty1 {S : A → Prop} (h : ¬∃ x : A, S x) : S = @emptySet A := b
   · intro h
     contradiction
 
+theorem EmptyNotProper : ¬ proper (@emptySet A) := by
+  intro h
+  have ⟨x,y,hx,hy⟩ := h
+  exact hx
+
 end empty
 
+
+section univ
+
+theorem defUniverse1 {S : A → Prop} (h : ∀ x : A, S x) : S = @universeSet A := by
+  funext x
+  ext
+  constructor
+  · intro h
+    trivial
+  · intro hx
+    exact h x
+
+theorem UniverseNotProper : ¬ proper (@universeSet A) := by
+  intro h
+  have ⟨x,y,hx,hy⟩ := h
+  unfold universeSet at hy
+  exact hy ⟨⟩
+
+end univ
 
 section unitary
 
