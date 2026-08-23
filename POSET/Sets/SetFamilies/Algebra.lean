@@ -28,3 +28,21 @@ theorem UnionS_Is_UnionF_Pair (S1 S2 : A → Prop) : (UnionS S1 S2) = UnionF (pa
       right
       rw [hr] at hx
       exact hx
+
+theorem IntersectionS_Is_Intersection_Pair (S1 S2 : A → Prop) :
+  (IntersectionS S1 S2) = InterseccionF (pairSet S1 S2) := by
+  ext x
+  constructor
+  · intro h S hS
+    cases hS with
+    | inl hS =>
+      rw [hS]
+      exact h.left
+    | inr hS =>
+      rw [hS]
+      exact h.right
+  · intro h
+    unfold InterseccionF at h
+    have h1 := h S1 (L_In_Pair S1 S2)
+    have h2 := h S2 (R_In_Pair S1 S2)
+    exact ⟨h1, h2⟩
