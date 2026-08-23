@@ -1,5 +1,5 @@
 import POSET.Sets.Algebra.Defs
-import POSET.Sets.Defs
+import POSET.Sets.Basic
 import POSET.Sets.SetFamilies.Algebra
 import POSET.Sets.SetFamilies.Basic
 
@@ -56,3 +56,46 @@ theorem L_Subset_U (S1 S2 : A → Prop) : subset S1 (UnionS S1 S2) := by
 theorem R_Subset_U (S1 S2 : A → Prop) : subset S2 (UnionS S1 S2) := by
   rw [U_Comm]
   exact L_Subset_U S2 S1
+
+theorem R_Distr_I_To_U_Subset (S1 S2 S3 : A → Prop) :
+  subset (UnionS S1 (IntersectionS S2 S3)) (IntersectionS (UnionS S1 S2) (UnionS S1 S3)) := by
+  intro x h
+  cases h with
+  |inl h =>
+    have h1 : UnionS S1 S2 x := by
+      left
+      exact h
+    have h2 : UnionS S1 S3 x := by
+      left
+      exact h
+    exact ⟨h1, h2⟩
+  |inr h =>
+    have h1 : UnionS S1 S2 x := by
+      right
+      exact h.left
+    have h2 : UnionS S1 S3 x := by
+      right
+      exact h.right
+    exact ⟨h1, h2⟩
+
+theorem R_Distr_I_To_U_Subset2 (S1 S2 S3 : A → Prop) :
+  subset (IntersectionS (UnionS S1 S2) (UnionS S1 S3)) (UnionS S1 (IntersectionS S2 S3)) := by
+  intro x h
+  have ⟨h2,h3⟩ := h
+  cases h2 with
+  | inl h1 =>
+    left
+    exact h1
+  | inr h2 =>
+    cases h3 with
+    | inl h1 =>
+      left
+      exact h1
+    | inr h3 =>
+      right
+      exact ⟨h2,h3⟩
+
+
+theorem R_Distr_I_To_U (S1 S2 S3 : A → Prop):
+  UnionS S1 (IntersectionS S2 S3) = IntersectionS (UnionS S1 S2) (UnionS S1 S3) :=
+  SubsetAntisymetric (R_Distr_I_To_U_Subset S1 S2 S3) (R_Distr_I_To_U_Subset2 S1 S2 S3)

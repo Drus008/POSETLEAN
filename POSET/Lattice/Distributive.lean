@@ -16,3 +16,7 @@ def SimpDistLattice (L : Lattice A)
     rw [Join_Associativity L.toJoinSemilattice,← Join_Associativity L.toJoinSemilattice _ _ (L.meet c a)]
     rw [Meet_Lattice_Comm L c a]
     rw [← h, ← h, Absortion_Law1]
+
+def SimpDistLattice2 (L : Lattice A)
+  (h : ∀ a b c : A , L.join a (L.meet b c) = L.meet (L.join a b) (L.join a c))
+  : DistributiveLattice A := DistLattice_Is_Dual_DistLattice (SimpDistLattice (Lattice_Is_Dual_Lattice L) h)

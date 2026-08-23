@@ -1,6 +1,7 @@
 import POSET.Sets.SetPOSET.Defs
 import POSET.Sets.Algebra.Basic
 import POSET.Lattice.Defs
+import POSET.Lattice.Distributive
 
 variable (A : Type)
 
@@ -45,3 +46,6 @@ def SetLattice : Lattice (A → Prop) where
 theorem Meet_Lattice_Is_Meet_Set : (SetLattice A).toMeetSemilattice = SetMeet A := rfl
 
 theorem Join_Lattice_Is_Join_Set : (SetLattice A).toJoinSemilattice = SetJoin A := rfl
+
+def Set_DistLattice : DistributiveLattice (A → Prop) :=
+  SimpDistLattice2 (SetLattice A) R_Distr_I_To_U
