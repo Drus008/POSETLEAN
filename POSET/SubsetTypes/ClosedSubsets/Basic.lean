@@ -209,4 +209,42 @@ theorem UnionDownwardClosed_Is_DownwardClosed {P : POSET A} {F : Family A} (h : 
   have hS := h S hS
   exact DownwardClosed_Is_Dual_UpwardClosed P hS
 
+theorem IntersectionUClosed_Is_UClosed {P : POSET A} {F : Family A}
+  (h : subset F (UpwardClosed P)) : UpwardClosed P (InterseccionF F) := by
+  intro a x ha hx S hS
+  have ha := ha S hS
+  have h := h S hS
+  exact h a x ha hx
+
+theorem IntersectionDClosed_Is_DClosed {P : POSET A} {F : Family A}
+  (h : subset F (DownwardClosed P)) : DownwardClosed P (InterseccionF F) := by
+  intro a x ha hx S hS
+  have ha := ha S hS
+  have h := h S hS
+  exact h a x ha hx
+
+theorem Family_Filter_Is_Family_UClosed {P : POSET A} {F : Family A}
+  (h : subset F (Filter P)) : subset F (UpwardClosed P) := by
+  intro S hS
+  unfold subset at h
+  exact (h S hS).left
+
+theorem Family_Ideal_Is_Family_DClosed {P : POSET A} {F : Family A}
+  (h : subset F (Ideal P)) : subset F (DownwardClosed P) := by
+  intro S hS
+  unfold subset at h
+  exact (h S hS).left
+
+theorem Family_Filter_Is_DDirected {P : POSET A} {F : Family A}
+  (h : subset F (Filter P)) : subset F (DDirectedSet P) := by
+  intro S hS
+  unfold subset at h
+  exact (h S hS).right
+
+theorem Family_Ideal_Is_UDirected {P : POSET A} {F : Family A}
+  (h : subset F (Ideal P)) : subset F (UDirectedSet P) := by
+  intro S hS
+  unfold subset at h
+  exact (h S hS).right
+
 end Families
