@@ -42,7 +42,7 @@ theorem Universe_Lattice_Is_DDirected (L : Lattice A) :
   DDirectedSet L.toPOSET (@universeSet A) :=
   Universe_MeetSemilattice_Is_DDirected L.toMeetSemilattice
 
-theorem Intersection_Filters_Is_Filter_In_MeetSemilattice (M : MeetSemilattice A) (F : Family A) (h : subset F (Filter M.toPOSET)) :
+theorem Intersection_Filters_Is_Filter_In_MeetSemilattice {M : MeetSemilattice A} {F : Family A} (h : subset F (Filter M.toPOSET)) :
   Filter M.toPOSET (InterseccionF F) := by
   constructor
   · have h := Family_Filter_Is_Family_UClosed h
@@ -58,3 +58,11 @@ theorem Intersection_Filters_Is_Filter_In_MeetSemilattice (M : MeetSemilattice A
       have hc := M.inf a b cS hcab
       exact hS.left cS (M.meet a b) hcS hc
     · exact ⟨M.down1 a b, M.down2 a b⟩
+
+theorem Intersection_Ideals_Is_Ideal_In_JoinSemilattice (J : JoinSemilattice A) (F : Family A) (h : subset F (Ideal J.toPOSET)) :
+  Ideal J.toPOSET (InterseccionF F) := by
+  have h : subset F (Filter (DualPOSET J.toPOSET)) := h
+  rw [DualPOSET_Join_Is_POSET_DualJoin] at h
+  have h := Intersection_Filters_Is_Filter_In_MeetSemilattice h
+  rw [← DualPOSET_Join_Is_POSET_DualJoin] at h
+  exact Dual_Filter_Is_Ideal J.toPOSET h
