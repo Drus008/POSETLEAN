@@ -1,7 +1,9 @@
 import POSET.Lattice.Dual
 import POSET.SubsetTypes.ClosedSubsets.Dual
 import POSET.SubsetTypes.ClosedSubsets.Subsets
+import POSET.SubsetTypes.ClosedSubsets.Basic
 import POSET.Sets.Defs
+import POSET.Sets.SetFamilies.Basic
 
 variable {A : Type}
 
@@ -39,3 +41,20 @@ theorem Universe_Lattice_Is_UDirected (L : Lattice A) :
 theorem Universe_Lattice_Is_DDirected (L : Lattice A) :
   DDirectedSet L.toPOSET (@universeSet A) :=
   Universe_MeetSemilattice_Is_DDirected L.toMeetSemilattice
+
+theorem Intersection_Filters_Is_Filter_In_MeetSemilattice (M : MeetSemilattice A) (F : Family A) (h : subset F (Filter M.toPOSET)) :
+  Filter M.toPOSET (InterseccionF F) := by
+  constructor
+  · have h := Family_Filter_Is_Family_UClosed h
+    exact IntersectionUClosed_Is_UClosed h
+  · intro a b ⟨ha, hb⟩
+    exists M.meet a b
+    constructor
+    · intro S hS
+      have ha := ha S hS
+      have hb := hb S hS
+      have hS := h S hS
+      have ⟨cS, hcS, hcab⟩ := hS.right a b ⟨ha, hb⟩
+      have hc := M.inf a b cS hcab
+      exact hS.left cS (M.meet a b) hcS hc
+    · exact ⟨M.down1 a b, M.down2 a b⟩
