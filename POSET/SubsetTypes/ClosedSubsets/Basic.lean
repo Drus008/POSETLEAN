@@ -95,6 +95,31 @@ theorem DClosure_UDirected_Is_Ideal {P : POSET A} {S : A → Prop} (h : UDirecte
   Ideal P (DownwardClosure P S) :=
   ⟨DownwardClosure_Is_DownwardClosed P S, DClosure_UDirected_Is_UDirected h⟩
 
+theorem If_UClosure_Is_DDirected_Then_Is_DDirected {P : POSET A} {S : A → Prop}
+  (h : DDirectedSet P (UpwardClosure P S)) : DDirectedSet P S := by
+  intro a b ⟨ha,hb⟩
+  have ha := UpwardClosure_Is_Subset P S a ha
+  have hb := UpwardClosure_Is_Subset P S b hb
+  have ⟨c',hc'⟩ := h a b ⟨ha,hb⟩
+  have ⟨c, hc⟩ := hc'.left
+  have ha := P.trans c c' a hc.right hc'.right.left
+  have hb := P.trans c c' b hc.right hc'.right.right
+  exact ⟨c, hc.left, ha, hb⟩
+
+theorem If_DClosure_Is_UDirected_Then_Is_UDirected {P : POSET A} {S : A → Prop}
+  (h : UDirectedSet P (DownwardClosure P S)) : UDirectedSet P S := by
+  have h := UDirectedSet_Is_Dual_DDirectedSet P h
+  rw [DownwardClosure_Is_Dual_UpwardClosure] at h
+  have h := If_UClosure_Is_DDirected_Then_Is_DDirected h
+  exact Dual_DDirectedSet_Is_UDirectedSet P h
+
+theorem If_UClosure_Is_Filter_Then_Is_DDirected {P : POSET A} {S : A → Prop}
+  (h : Filter P (UpwardClosure P S)) : DDirectedSet P S :=
+  If_UClosure_Is_DDirected_Then_Is_DDirected h.right
+
+theorem If_DClosure_Is_Ideal_Then_Is_UDirected {P : POSET A} {S : A → Prop}
+  (h : Ideal P (DownwardClosure P S)) : UDirectedSet P S :=
+  If_DClosure_Is_UDirected_Then_Is_UDirected h.right
 
 section extreme
 
