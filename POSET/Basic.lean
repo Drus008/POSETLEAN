@@ -16,3 +16,9 @@ def SubPOSET (P : A → Prop) (base : POSET A) : POSET {x : A // P x} where
 
 theorem antisym {a b : A} (P : POSET A) (h1 : P.rel a b) (h2 : P.rel b a) : a = b := by
   exact P.antisym a b h1 h2
+
+theorem POSET_Lemma1 (S : A → Prop) (P : POSET A) (x y : A) (hx : S x) (hy : S y) (h : P.rel x y) :
+  (SubPOSET S P).rel ⟨x,hx⟩ ⟨y,hy⟩ := h
+
+theorem POSET_Lemma2 (S : A → Prop) (P : POSET A) (x y : {x : A // S x}) (h : (SubPOSET S P).rel x y) :
+  P.rel x.val y.val := h
