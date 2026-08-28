@@ -2,7 +2,6 @@ import POSET.SubsetTypes.ClosedSubsets.Defs
 import POSET.SubsetTypes.ClosedSubsets.Dual
 import POSET.Sets.Basic
 import POSET.Sets.SetPOSET.ExtremeElements
-import POSET.Sets.SetFamilies.Defs
 import POSET.ExtremeElements.BasicProp
 
 variable {A : Type} (P : POSET A)
@@ -214,62 +213,3 @@ theorem If_Subset_Has_Min_Then_Is_DDirected {P : POSET A} {m : A} {S : A → Pro
   exact If_Subset_Has_LBound_Then_Is_DDirected h hS
 
 end extreme
-
-section Families
-
-theorem UnionUpwardClosed_Is_UpwardClosed {P : POSET A} {F : Family A} (h : subset F (UpwardClosed P)) :
-  UpwardClosed P (UnionF F) := by
-  unfold UpwardClosed UnionF
-  intro a x hF hx
-  have ⟨S,hF,ha⟩ := hF
-  have hS := h S hF
-  have h := hS a x ha hx
-  exact ⟨S,hF,h⟩
-
-theorem UnionDownwardClosed_Is_DownwardClosed {P : POSET A} {F : Family A} (h : subset F (DownwardClosed P)) :
-  DownwardClosed P (UnionF F) := by
-  apply Dual_UpwardClosed_Is_DownwardClosed
-  apply UnionUpwardClosed_Is_UpwardClosed
-  intro S hS
-  have hS := h S hS
-  exact DownwardClosed_Is_Dual_UpwardClosed P hS
-
-theorem IntersectionUClosed_Is_UClosed {P : POSET A} {F : Family A}
-  (h : subset F (UpwardClosed P)) : UpwardClosed P (InterseccionF F) := by
-  intro a x ha hx S hS
-  have ha := ha S hS
-  have h := h S hS
-  exact h a x ha hx
-
-theorem IntersectionDClosed_Is_DClosed {P : POSET A} {F : Family A}
-  (h : subset F (DownwardClosed P)) : DownwardClosed P (InterseccionF F) := by
-  intro a x ha hx S hS
-  have ha := ha S hS
-  have h := h S hS
-  exact h a x ha hx
-
-theorem Family_Filter_Is_Family_UClosed {P : POSET A} {F : Family A}
-  (h : subset F (Filter P)) : subset F (UpwardClosed P) := by
-  intro S hS
-  unfold subset at h
-  exact (h S hS).left
-
-theorem Family_Ideal_Is_Family_DClosed {P : POSET A} {F : Family A}
-  (h : subset F (Ideal P)) : subset F (DownwardClosed P) := by
-  intro S hS
-  unfold subset at h
-  exact (h S hS).left
-
-theorem Family_Filter_Is_DDirected {P : POSET A} {F : Family A}
-  (h : subset F (Filter P)) : subset F (DDirectedSet P) := by
-  intro S hS
-  unfold subset at h
-  exact (h S hS).right
-
-theorem Family_Ideal_Is_UDirected {P : POSET A} {F : Family A}
-  (h : subset F (Ideal P)) : subset F (UDirectedSet P) := by
-  intro S hS
-  unfold subset at h
-  exact (h S hS).right
-
-end Families

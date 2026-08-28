@@ -68,6 +68,12 @@ theorem DDirectedSet_Is_Dual_UDirectedSet {S : A → Prop} (h : DDirectedSet P S
   UDirectedSet (DualPOSET P) S := by
   trivial
 
+theorem UDirectedSet_Equal_DualDdirectedSet : UDirectedSet P = DDirectedSet (DualPOSET P) := by
+  trivial
+
+theorem DDirectedSet_Equal_DualUdirectedSet : DDirectedSet P = UDirectedSet (DualPOSET P) := by
+  trivial
+
 theorem Dual_UDirectedSet_Is_DDirectedSet {S : A → Prop} (h : UDirectedSet (DualPOSET P) S) :
   DDirectedSet P S := by
   trivial
