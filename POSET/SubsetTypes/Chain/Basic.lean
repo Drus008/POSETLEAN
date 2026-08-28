@@ -2,6 +2,9 @@ import POSET.SubsetTypes.Chain.Defs
 import POSET.Sets.Algebra.Defs
 import POSET.ExtremeElements.Defs
 import POSET.DualOrder
+import POSET.Sets.SetFamilies.Defs
+import POSET.Sets.Defs
+import POSET.Sets.SetPOSET.Defs
 
 variable {A : Type} {P : POSET A}
 
@@ -42,3 +45,29 @@ theorem Union_Chain_Share_Upp_Low_Bound_Is_Chain {B : A} {CU CL : A → Prop}
       exact P.trans x B y hx hy
     case inr hy =>
       exact hCL x y hx hy
+
+theorem Union_Chain_Of_Chains_Is_Chain {F : Family A} (h : Chain (SetPOSET A) F)
+  (h' : subset F (Chain P)):
+  Chain P (UnionF F) := by
+  intro x1 x2 h1 h2
+  have ⟨C1, hC1, h1'⟩ := h1
+  have ⟨C2, hC2, h2'⟩ := h2
+  have h := h C1 C2 hC1 hC2
+  cases h with
+  | inl h =>
+    have h1' := h x1 h1'
+    have hC2 := h' C2 hC2
+    exact hC2 x1 x2 h1' h2'
+  |inr h =>
+    have h2' := h x2 h2'
+    have hC1 := h' C1 hC1
+    exact hC1 x1 x2 h1' h2'
+
+
+theorem Intersection_NoEmpty_Chains_Is_Chain {F : Family A} {C : A → Prop}
+  (h : subset F (Chain P)) (hC : F C) : Chain P (InterseccionF F) := by
+  intro x y hx hy
+  have hx := hx C hC
+  have hy := hy C hC
+  have h := h C hC
+  exact h x y hx hy

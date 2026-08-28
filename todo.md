@@ -3,8 +3,6 @@
 
 ## SubsetTypes
 
-- If UpperClosure is DDirected then it is DDirected? (UClosure is filter => DDirected)
-
 - LowerBound LowerSet is inf?
 
 ## LOSET
@@ -24,3 +22,6 @@
 ## Product of POSETs
 
 ## Zorn Lema
+
+- Union Chain of chains is Chain.
+- Unión Chain of Filters is filter
