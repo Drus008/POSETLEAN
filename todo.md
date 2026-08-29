@@ -7,6 +7,15 @@
 
 - LowerBound LowerSet is inf?
 
+### Other types
+
+- Generalize notions on set families like Free family, Fixed Family...
+
+## Filters
+
+- Prime Filter
+- Ultrafilter
+
 ## LOSET
 
 - Loset is lattice

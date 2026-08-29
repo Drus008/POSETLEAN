@@ -1,4 +1,4 @@
-import POSET.SubsetTypes.ClosedSubsets.Dual
+import POSET.SubsetTypes.ClosedSubsets.Subsets
 import POSET.Sets.Basic
 import POSET.Sets.SetPOSET.ExtremeElements
 import POSET.ExtremeElements.BasicProp
@@ -92,6 +92,18 @@ theorem UClosure_DDirected_Is_Filter {P : POSET A} {S : A → Prop} (h : DDirect
 theorem DClosure_UDirected_Is_Ideal {P : POSET A} {S : A → Prop} (h : UDirectedSet P S) :
   Ideal P (DownwardClosure P S) :=
   ⟨DownwardClosure_Is_DownwardClosed P S, DClosure_UDirected_Is_UDirected h⟩
+
+theorem UClosure_Element_Is_Filter {P : POSET A} (a : A) :
+  Filter P (ElementUpwardClosure P a) := by
+  rw [ElementUpwardClosure_Is_Singleton_UpwardClosure]
+  have h := Unitary_Is_DDirected P a
+  exact UClosure_DDirected_Is_Filter h
+
+theorem DClosure_Element_Is_Ideal {P : POSET A} (a : A) :
+  Ideal P (ElementDownwardClosure P a) := by
+  rw [ElementDownwardClosure_Is_Singleton_DownwardClosure]
+  have h := Unitary_Is_UDirected P a
+  exact DClosure_UDirected_Is_Ideal h
 
 theorem If_UClosure_Is_DDirected_Then_Is_DDirected {P : POSET A} {S : A → Prop}
   (h : DDirectedSet P (UpwardClosure P S)) : DDirectedSet P S := by
