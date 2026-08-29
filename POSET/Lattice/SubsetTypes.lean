@@ -1,7 +1,7 @@
 import POSET.Lattice.Dual
 import POSET.SubsetTypes.ClosedSubsets.Dual
 import POSET.SubsetTypes.ClosedSubsets.Subsets
-import POSET.SubsetTypes.ClosedSubsets.Basic
+import POSET.SubsetTypes.ClosedSubsets.Families
 import POSET.Sets.Defs
 import POSET.Sets.SetFamilies.Basic
 
@@ -41,6 +41,18 @@ theorem Universe_Lattice_Is_UDirected (L : Lattice A) :
 theorem Universe_Lattice_Is_DDirected (L : Lattice A) :
   DDirectedSet L.toPOSET (@universeSet A) :=
   Universe_MeetSemilattice_Is_DDirected L.toMeetSemilattice
+
+theorem Universe_JoinSemilattice_Is_Ideal (J : JoinSemilattice A) :
+  Ideal J.toPOSET (@universeSet A) := ⟨UniversIsDownward J.toPOSET, Universe_JoinSemilattice_Is_UDirected J⟩
+
+theorem Universe_MeetSemilattice_Is_Filter (M : MeetSemilattice A) :
+  Filter M.toPOSET (@universeSet A) := ⟨UniversIsUpward M.toPOSET, Universe_MeetSemilattice_Is_DDirected M⟩
+
+theorem Universe_Lattice_Is_Ideal (L : Lattice A) :
+  Ideal L.toPOSET (@universeSet A) := Universe_JoinSemilattice_Is_Ideal L.toJoinSemilattice
+
+theorem Universe_Lattice_Is_Filter (L : Lattice A) :
+  Filter L.toPOSET (@universeSet A) := Universe_MeetSemilattice_Is_Filter L.toMeetSemilattice
 
 theorem Intersection_Filters_Is_Filter_In_MeetSemilattice {M : MeetSemilattice A} {F : Family A} (h : subset F (Filter M.toPOSET)) :
   Filter M.toPOSET (InterseccionF F) := by

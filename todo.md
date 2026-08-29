@@ -3,15 +3,13 @@
 
 ## SubsetTypes
 
+- Complementary Upper is Lower
+
 - LowerBound LowerSet is inf?
 
 ## LOSET
 
 - Loset is lattice
-
-## POSET Set
-
-- SetPOSET is Lattice (distributive)
 
 ## Down Map
 

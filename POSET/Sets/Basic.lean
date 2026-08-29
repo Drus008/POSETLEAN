@@ -44,6 +44,8 @@ end univ
 
 section unitary
 
+theorem Unitary_Has_Element (a : A) : unitarySet a a := rfl
+
 theorem UnitarySet_Determines_Element {a b : A} (h : (unitarySet a) = (unitarySet b)) :
   a = b := by
   unfold unitarySet at h

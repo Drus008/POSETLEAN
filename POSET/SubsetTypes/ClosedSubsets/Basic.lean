@@ -1,4 +1,3 @@
-import POSET.SubsetTypes.ClosedSubsets.Defs
 import POSET.SubsetTypes.ClosedSubsets.Dual
 import POSET.Sets.Basic
 import POSET.Sets.SetPOSET.ExtremeElements
