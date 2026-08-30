@@ -1,5 +1,6 @@
 import POSET.Sets.Basic
 import POSET.SubsetTypes.ClosedSubsets.Dual
+import POSET.Sets.Algebra.Defs
 
 variable {A : Type} (P : POSET A)
 local infix:50 " ≤ " => P.rel
@@ -54,3 +55,15 @@ theorem Unitary_Is_UDirected (a : A) : UDirectedSet P (unitarySet a) := by
 theorem Unitary_Is_DDirected (a : A) : DDirectedSet P (unitarySet a) := by
   apply Dual_UDirectedSet_Is_DDirectedSet
   exact Unitary_Is_UDirected (DualPOSET P) a
+
+theorem Complementary_UClosed_Is_DClosed {P : POSET A} {S : A → Prop} (h : UpwardClosed P S) :
+  DownwardClosed P (Complementary S) := by
+  intro a x ha hxa hx
+  have hx' := h x a hx hxa
+  exact ha hx'
+
+theorem Complementart_DClosed_Is_UClosed {P : POSET A} {S : A → Prop} (h : DownwardClosed P S) :
+  UpwardClosed P (Complementary S) := by
+  intro a x ha hxa hx
+  have hx' := h x a hx hxa
+  exact ha hx'

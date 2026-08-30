@@ -17,6 +17,9 @@ structure MeetSemilattice (A : Type) extends POSET A where
 @[ext]
 structure Lattice (A : Type) extends (JoinSemilattice A), (MeetSemilattice A)
 
+instance : Coe (Lattice A) (MeetSemilattice A) := ⟨Lattice.toMeetSemilattice⟩
+instance : Coe (Lattice A) (JoinSemilattice A) := ⟨Lattice.toJoinSemilattice⟩
+
 @[ext]
 structure DistributiveLattice (A : Type) extends (Lattice A) where
   distMeet : ∀ a b c : A, meet a (join b c) = join (meet a b) (meet a c)

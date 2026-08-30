@@ -78,3 +78,34 @@ theorem Intersection_Ideals_Is_Ideal_In_JoinSemilattice (J : JoinSemilattice A) 
   have h := Intersection_Filters_Is_Filter_In_MeetSemilattice h
   rw [← DualPOSET_Join_Is_POSET_DualJoin] at h
   exact Dual_Filter_Is_Ideal J.toPOSET h
+
+section Prime
+
+def PrimeIdeal (M : MeetSemilattice A) (I : A → Prop) : Prop :=
+  (Ideal M.toPOSET I) ∧ (proper I) ∧ (∀ x y : A, (I (M.meet x y)) → ((I x) ∨ (I y)))
+
+def PrimeFilter (J : JoinSemilattice A) (F : A → Prop) : Prop :=
+  (Filter J.toPOSET F) ∧ (proper F) ∧ (∀ x y : A, (F (J.join x y)) → ((F x) ∨ (F y)))
+
+theorem PrimeIdeal_Is_Dual_PrimeFilter_Meet_Join {M : MeetSemilattice A} {I : A → Prop} (h : PrimeIdeal M I) :
+  PrimeFilter (Meet_Is_Dual_Join M) I := by
+  have h' := Ideal_Is_Dual_Filter M.toPOSET h.left
+  rw [DualPOSET_Meet_Is_POSET_DualMeet] at h'
+  exact ⟨h', h.right.left, h.right.right⟩
+
+theorem PrimeFilter_Is_Dual_PrimeIdeal_Meet_Join {J : JoinSemilattice A} {F : A → Prop} (h : PrimeFilter J F) :
+  PrimeIdeal (Join_Is_Dual_Meet J) F := by
+  have h' := Filter_Is_Dual_Ideal J.toPOSET h.left
+  rw [DualPOSET_Join_Is_POSET_DualJoin] at h'
+  exact ⟨h', h.right.left, h.right.right⟩
+
+theorem PrimeIdeal_Is_Dual_PrimeFilter {L : Lattice A} {I : A → Prop} (h : PrimeIdeal L I) :
+  PrimeFilter (Lattice_Is_Dual_Lattice L) I := PrimeIdeal_Is_Dual_PrimeFilter_Meet_Join h
+
+theorem PrimeFilter_Is_Dual_PrimeIdeal {L : Lattice A} {F : A → Prop} (h : PrimeFilter L F) :
+  PrimeIdeal (Lattice_Is_Dual_Lattice L) F := PrimeFilter_Is_Dual_PrimeIdeal_Meet_Join h
+
+
+
+
+end Prime
