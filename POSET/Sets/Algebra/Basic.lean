@@ -10,6 +10,15 @@ theorem Set_Subset_Double_Complement (S1 : A → Prop) : subset S1 (Complementar
   intro nh
   exact nh h
 
+theorem Complementary_Is_Disjoint (S1 : A → Prop) : Disjoint S1 (Complementary S1) := by
+  intro x h
+  exact h.right h.left
+
+theorem Disjoint_Is_Conmutative {S1 S2 : A → Prop} (h : Disjoint S1 S2) : Disjoint S2 S1 := by
+  intro x h'
+  unfold Disjoint at h
+  exact h x ⟨h'.right, h'.left⟩
+
 
 theorem U_Comm (S1 S2 : A → Prop) : UnionS S1 S2 = UnionS S2 S1 := by
   ext x
