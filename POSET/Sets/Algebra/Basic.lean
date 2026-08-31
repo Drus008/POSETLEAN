@@ -2,6 +2,7 @@ import POSET.Sets.Algebra.Defs
 import POSET.Sets.Basic
 import POSET.Sets.SetFamilies.Algebra
 import POSET.Sets.SetFamilies.Basic
+import POSET.Logic
 
 variable {A : Type}
 
@@ -9,6 +10,11 @@ theorem Set_Subset_Double_Complement (S1 : A → Prop) : subset S1 (Complementar
   intro x h
   intro nh
   exact nh h
+
+theorem Double_Complement (S : A → Prop) : S = (Complementary (Complementary S)) := by
+  ext x
+  unfold Complementary
+  rw [not_not_iff]
 
 theorem Complementary_Is_Disjoint (S1 : A → Prop) : Disjoint S1 (Complementary S1) := by
   intro x h
@@ -18,6 +24,12 @@ theorem Disjoint_Is_Conmutative {S1 S2 : A → Prop} (h : Disjoint S1 S2) : Disj
   intro x h'
   unfold Disjoint at h
   exact h x ⟨h'.right, h'.left⟩
+
+theorem Complementary_Proper_Is_Proper {S : A → Prop} (h : proper S) :
+  proper (Complementary S) := by
+  have ⟨x,y, hx, hy⟩ := h
+  have hx : ¬¬ S x := fun hnS => hnS hx
+  exact ⟨y, x, hy, hx⟩
 
 
 theorem U_Comm (S1 S2 : A → Prop) : UnionS S1 S2 = UnionS S2 S1 := by

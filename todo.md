@@ -9,11 +9,10 @@
 
 ### Other types
 
-- Generalize notions on set families like Free family, Fixed Family...
+- Generalize notions on set families like Free family, Fixed Family, principal...
 
 ### Filters
 
-- Prime Filter
 - Ultrafilter
 
 ## LOSET
@@ -27,8 +26,3 @@
 ## Representation theorem on distributive Lattices
 
 ## Product of POSETs
-
-## Zorn Lema
-
-- Union Chain of chains is Chain.
-- Unión Chain of Filters is filter

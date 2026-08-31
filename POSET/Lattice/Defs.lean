@@ -7,6 +7,8 @@ structure JoinSemilattice (A : Type) extends POSET A where
   up2 : ∀ a b : A, rel b (join a b)
   sup : ∀ a b h: A, (rel a h ∧ rel b h) → rel (join a b) h
 
+instance {A : Type} : CoeOut (JoinSemilattice A) (POSET A) := ⟨JoinSemilattice.toPOSET⟩
+
 @[ext]
 structure MeetSemilattice (A : Type) extends POSET A where
   meet : A → A → A
@@ -14,11 +16,17 @@ structure MeetSemilattice (A : Type) extends POSET A where
   down2 : ∀ a b : A, rel (meet a b) b
   inf : ∀ a b h: A, (rel h a ∧ rel h b) → rel h (meet a b)
 
+instance {A : Type} : CoeOut (MeetSemilattice A) (POSET A) := ⟨MeetSemilattice.toPOSET⟩
+
 @[ext]
 structure Lattice (A : Type) extends (JoinSemilattice A), (MeetSemilattice A)
 
-instance : Coe (Lattice A) (MeetSemilattice A) := ⟨Lattice.toMeetSemilattice⟩
-instance : Coe (Lattice A) (JoinSemilattice A) := ⟨Lattice.toJoinSemilattice⟩
+instance {A : Type} : CoeOut (Lattice A) (MeetSemilattice A) := ⟨Lattice.toMeetSemilattice⟩
+instance {A : Type} : CoeOut (Lattice A) (JoinSemilattice A) := ⟨Lattice.toJoinSemilattice⟩
+
+theorem Lattice_POSET_Meet {A : Type} (L : Lattice A) : L.toPOSET = L.toMeetSemilattice.toPOSET := by trivial
+theorem Lattice_POSET_Join {A : Type} (L : Lattice A) : L.toPOSET = L.toJoinSemilattice.toPOSET := by trivial
+
 
 @[ext]
 structure DistributiveLattice (A : Type) extends (Lattice A) where
