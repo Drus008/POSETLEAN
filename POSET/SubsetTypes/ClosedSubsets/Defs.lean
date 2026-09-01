@@ -1,4 +1,5 @@
 import POSET.Basic
+import POSET.Sets.Defs
 
 variable {A : Type} (P : POSET A)
 local infix:50 " ≤ " => P.rel
@@ -29,3 +30,9 @@ def DDirectedSet (S : A → Prop) : Prop :=
 def Ideal (S : A → Prop) : Prop := (DownwardClosed P S) ∧ (UDirectedSet P S)
 
 def Filter (S : A → Prop) : Prop := (UpwardClosed P S) ∧ (DDirectedSet P S)
+
+def UltraFilter (S : A → Prop) : Prop :=
+  (Filter P S) ∧ (proper S) ∧ (∀ F : A → Prop, ((Filter P F) ∧ (proper F) ∧ (subset F S)) → F = S)
+
+def UltraIdeal (S : A → Prop) : Prop :=
+  (Ideal P S) ∧ (proper S) ∧ ∀ I : A → Prop, ((Ideal P I) ∧ (proper I) ∧ (subset I S)) → I = S
