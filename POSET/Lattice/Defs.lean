@@ -1,4 +1,5 @@
 import POSET.Basic
+import POSET.ExtremeElements.Defs
 
 @[ext]
 structure JoinSemilattice (A : Type) extends POSET A where
@@ -32,3 +33,9 @@ theorem Lattice_POSET_Join {A : Type} (L : Lattice A) : L.toPOSET = L.toJoinSemi
 structure DistributiveLattice (A : Type) extends (Lattice A) where
   distMeet : ∀ a b c : A, meet a (join b c) = join (meet a b) (meet a c)
   distJoin : ∀ a b c : A, join a (meet b c) = meet (join a b) (join a c)
+
+def Disjoints {A : Type} (M : MeetSemilattice A) (a b : A) := MinElement M (M.meet a b)
+
+def CoDisjoints {A : Type} (J : JoinSemilattice A) (a b : A) := MaxElement J (J.join a b)
+
+def Complementaries {A : Type} (L : Lattice A) (a b : A)  := (Disjoints L a b) ∧ (CoDisjoints L a b)

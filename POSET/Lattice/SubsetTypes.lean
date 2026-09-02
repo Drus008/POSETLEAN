@@ -117,6 +117,32 @@ theorem Intersection_Ideals_Is_Ideal_In_JoinSemilattice (J : JoinSemilattice A) 
 
 section SetOp
 
+theorem SetMeet_Comm {M : MeetSemilattice A} (S1 S2 : A → Prop) :
+  SetOperation M.meet S1 S2 = SetOperation M.meet S2 S1 := SetOp_Comm (Meet_Is_Comm M) S1 S2
+
+theorem SetJoin_Comm {M : MeetSemilattice A} (S1 S2 : A → Prop) :
+  SetOperation M.meet S1 S2 = SetOperation M.meet S2 S1 := SetOp_Comm (Meet_Is_Comm M) S1 S2
+
+theorem Set_Subset_UClosure_SetMeet_NoEmpty {M : MeetSemilattice A} (S1 : A → Prop) {S2 : A → Prop}
+  (h : ¬ S2 = emptySet ) : subset S1 (UpwardClosure M (SetOperation M.meet S1 S2)) := by
+  intro x hx
+  have ⟨x',hx'⟩ := NoEmpty_Has_Element h
+  exists M.meet x x'
+  constructor
+  · exists x
+    exists x'
+  · exact M.down1 x x'
+
+theorem Set_Subset_DClosure_SetJoin_NoEmpty {J : JoinSemilattice A} (S1 : A → Prop) {S2 : A → Prop}
+  (h : ¬ S2 = emptySet ) : subset S1 (DownwardClosure J (SetOperation J.join S1 S2)) := by
+  intro x hx
+  have ⟨x',hx'⟩ := NoEmpty_Has_Element h
+  exists J.join x x'
+  constructor
+  · exists x
+    exists x'
+  · exact J.up1 x x'
+
 theorem SetMeet_DDirected_Is_DDirected {M : MeetSemilattice A} {D1 D2 : A → Prop}
   (h1 : DDirectedSet M D1) (h2 : DDirectedSet M D2) : DDirectedSet M (SetOperation M.meet D1 D2) := by
   intro a b ⟨ha, hb⟩
@@ -152,7 +178,7 @@ theorem UClosure_SetMeet_Filters_Is_Filter (M : MeetSemilattice A) {F1 F2 : A �
   have h := SetMeet_DDirected_Is_DDirected h1.right h2.right
   exact UClosure_DDirected_Is_Filter h
 
-theorem DClosure_SetMeet_Ideal_Is_Ideal (J : JoinSemilattice A) {I1 I2 : A → Prop} (h1 : Ideal J I1) (h2 : Ideal J I2) :
+theorem DClosure_SetJoin_Ideal_Is_Ideal (J : JoinSemilattice A) {I1 I2 : A → Prop} (h1 : Ideal J I1) (h2 : Ideal J I2) :
   Ideal J (DownwardClosure J (SetOperation J.join I1 I2)) := by
   have h := SetJoin_UDirected_Is_UDirected h1.right h2.right
   exact DClosure_UDirected_Is_Ideal h
@@ -256,18 +282,6 @@ theorem Complementary_PrimeFilter_Is_PrimeIdeal {L : Lattice A} {F : A → Prop}
   have hF := PrimeFilter_Is_Dual_PrimeIdeal hF
   rw [← Dual_Lattice_Meet_Is_Dual_Join] at hF
   exact Complementary_PrimeIdeal_Is_PrimeFilter hF
-
-
-
-
-
---theorem UltraFilter_Is_PrimeFilter (J : JoinSemilattice A) : subset (@UltraFilter A J) (@PrimeFilter A J) := by
---  intro U hU
---  constructor
---  · exact hU.left
---  · constructor
---    · exact hU.right.left
---    · intro x y hJ
 
 
 end Prime

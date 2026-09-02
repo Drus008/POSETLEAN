@@ -1,6 +1,6 @@
 import POSET.Sets.Defs
 
-variable {A : Type}
+variable {A B C : Type}
 
 section empty
 
@@ -15,10 +15,31 @@ theorem defEmpty1 {S : A → Prop} (h : ¬∃ x : A, S x) : S = @emptySet A := b
   · intro h
     contradiction
 
+theorem NoEmpty_Has_Element {S : A → Prop} (h : S ≠ emptySet) : ∃ x : A, S x := by
+  apply Classical.byContradiction
+  intro h_contra
+  apply h
+  funext x
+  apply propext
+  constructor
+  · intro hx
+    apply False.elim
+    apply h_contra
+    exact ⟨x, hx⟩
+  · intro hx_empty
+    exact False.elim hx_empty
+
 theorem EmptyNotProper : ¬ proper (@emptySet A) := by
   intro h
   have ⟨x,y,hx,hy⟩ := h
   exact hx
+
+theorem ProperNotEmpty {S : A → Prop} (h : proper S) : ¬ S = (@emptySet A) := by
+  intro h'
+  have ⟨x, y, hx, hy⟩ := h
+  have h' := congrFun h' x
+  exact h'.mp hx
+
 
 end empty
 
@@ -152,3 +173,23 @@ theorem SubsetAntisymetric {S1 S2 : A → Prop} (h1 : subset S1 S2) (h2 : subset
   · exact h2 x
 
 end subset
+
+
+section SetOp
+
+theorem SetOp_Comm {Op : A → A → C} (h : ∀ x y : A, Op x y = Op y x) (S1 S2 : A → Prop) :
+  SetOperation Op S1 S2 = SetOperation Op S2 S1 := by
+  ext x
+  constructor
+  · intro h'
+    have ⟨a1, a2, h1, h2, h'⟩ := h'
+    rw [h a1 a2] at h'
+    exact ⟨a2, a1, h2, h1, h'⟩
+  · intro h'
+    have ⟨a1, a2, h1, h2, h'⟩ := h'
+    rw [h a1 a2] at h'
+    exact ⟨a2, a1, h2, h1, h'⟩
+
+
+
+end SetOp

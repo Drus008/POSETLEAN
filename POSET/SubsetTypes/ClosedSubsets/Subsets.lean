@@ -31,6 +31,18 @@ theorem EmptyIsFilter : Filter P (@emptySet A) := ⟨EmptyIsUpward P, EmptyIsDDi
 
 theorem EmptyIsIdeal : Ideal P (@emptySet A) := ⟨EmptyIsDownward P, EmptyIsUDirected P⟩
 
+theorem UpwardClosureElement_NotEmpty (a : A) : ¬ (ElementUpwardClosure P a) = (@emptySet A) := by
+  have h : ElementUpwardClosure P a a := P.refl a
+  intro h'
+  have h' := congrFun h' a
+  exact h'.mp h
+
+theorem DownwardClosureElement_NotEmpty (a : A) : ¬ (ElementDownwardClosure P a) = (@emptySet A) := by
+  have h : ElementDownwardClosure P a a := P.refl a
+  intro h'
+  have h' := congrFun h' a
+  exact h'.mp h
+
 theorem UniversIsUpward : UpwardClosed P universeSet := by
   unfold UpwardClosed
   intro x a h

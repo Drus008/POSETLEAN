@@ -50,3 +50,27 @@ def DistLattice_Is_Dual_DistLattice (L : DistributiveLattice A) : DistributiveLa
   toLattice := Lattice_Is_Dual_Lattice L.toLattice
   distJoin := L.distMeet
   distMeet := L.distJoin
+
+
+theorem Disjoints_Is_Dual_CoDisjoints (M : MeetSemilattice A) :
+  Disjoints M = CoDisjoints (Meet_Is_Dual_Join M) := rfl
+
+theorem CoDisjoints_Is_Dual_Disjoints (J : JoinSemilattice A) :
+  CoDisjoints J = Disjoints (Join_Is_Dual_Meet J) := rfl
+
+theorem Complementaries_Is_Dual_Complementaries (L : Lattice A) :
+  Complementaries L = Complementaries (Lattice_Is_Dual_Lattice L) := by
+  ext a b
+  constructor
+  · intro h
+    constructor
+    · have h := h.right
+      trivial
+    · have h := h.left
+      trivial
+  · intro h
+    constructor
+    · have h := h.right
+      trivial
+    · have h := h.left
+      trivial

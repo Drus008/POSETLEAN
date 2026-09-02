@@ -39,6 +39,12 @@ theorem ElementDownwardClosure_Is_Singleton_DownwardClosure (P : POSET A) (a : A
   rw [ElementDownwardClosure_Is_Dual_ElementUpwardClosure, DownwardClosure_Is_Dual_UpwardClosure]
   exact h
 
+theorem ElementUpwardClosure_Has_Element (P : POSET A) (a : A) :
+  (ElementUpwardClosure P a) a := P.refl a
+
+theorem ElementDownwardClosure_Has_Element (P : POSET A) (a : A) :
+  (ElementDownwardClosure P a) a := P.refl a
+
 theorem UpwardClosure_UpwardClosed_Is_Itself {P : POSET A} {S : A → Prop} (h : UpwardClosed P S) :
   (UpwardClosure P S) = S := by
   funext x
