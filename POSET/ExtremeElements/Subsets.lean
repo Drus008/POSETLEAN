@@ -33,6 +33,19 @@ theorem Min_Is_Sup_EmptySet {m : A} (h : MinElement P m) :
   have h1 := Max_Is_Inf_EmptySet h1
   exact Dual_Infimum_Is_Supremum h1
 
+theorem Inf_EmptySet_Is_Max {i : A} (h : Infimum P i (emptySet)) :
+  MaxElement P i := by
+  intro x
+  have h := h.right
+  have hx := all_Elements_Are_LowerBound_Of_EmptySet P x
+  exact h x hx
+
+theorem Sup_EmptySet_Is_Min {s : A} (h : Supremum P s (emptySet)) :
+  MinElement P s := by
+  have h := Supremum_Is_Dual_Infimum h
+  apply Dual_Max_Is_Min
+  exact Inf_EmptySet_Is_Max h
+
 end empty
 
 
