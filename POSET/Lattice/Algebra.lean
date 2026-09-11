@@ -114,3 +114,22 @@ theorem Absortion_Law1 (L : Lattice A) (a b : A) : L.meet a (L.join a b) = a := 
 theorem Absortion_Law2 (L : Lattice A) (a b : A) : L.join a (L.meet a b) = a := by
   rw [Join_Is_Comm]
   exact Greater_Is_Join (J := L.toJoinSemilattice) (L.down1 a b)
+
+theorem Join_Unique (J : JoinSemilattice A) (a b c : A)
+  (ha : J.rel a c) (hb : J.rel b c) (hc : ∀ h: A, (J.rel a h ∧ J.rel b h) → J.rel c h) :
+  c = J.join a b := by
+  have hJ := Join_Is_Sup_Pair J a b
+  have h := Greater_Two_Elements_UpperBound_Pair ha hb
+  have h : Supremum J c (pairSet a b) := by
+    constructor
+    · exact h
+    · intro U hU
+      have h := UpperBound_Pair_Greater_Two_Elements hU
+      exact hc U h
+  exact Sup_Unique h hJ
+
+theorem Meet_Unique (M : MeetSemilattice A) (a b c : A)
+  (ha : M.rel c a) (hb : M.rel c b) (hc : ∀ h : A, (M.rel h a ∧ M.rel h b) → M.rel h c) :
+  c = M.meet a b := by
+  let J := Meet_Is_Dual_Join M
+  exact Join_Unique J a b c ha hb hc
